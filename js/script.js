@@ -32,6 +32,8 @@ selectDesign.addEventListener("change", e => {
   // show color select menu
   selectColor.style.display = "block"
 
+  //'option[value="Select a shirt"]'
+
   let changed = e.target
   // console.log(changed.options[0].value) // logs "please select a t-shirt theme"
   //console.log(changed.value)
@@ -47,6 +49,13 @@ selectDesign.addEventListener("change", e => {
       selectColor.children[i].style.display = "none"
       console.log(selectColor.children[i])
     }
+    // select the FIRST 3 elements and show them
+    for (let j = 0; j < 3; j++) {
+      selectColor.children[j].style.display = "block"
+    }
+    // reset the menu to show the first option in this group of choices
+    document.querySelector('option[value = "cornflowerblue"]').style.display = "block"
+    document.querySelector('option[value = "tomato"]').style.display = "none"
   } else if (changed.value === "heart js") {
     console.log("I love Javascript was selected")
     // select the FIRST 3 elements and hide them
@@ -54,6 +63,14 @@ selectDesign.addEventListener("change", e => {
       // selectColor.children[i].disabled = true
       selectColor.children[i].style.display = "none"
       console.log(selectColor.children[i])
+      // console.log(selectColor.options[i])
     }
+    // select the LAST 3 elements and show them
+    for (let j = 3; j < 6; j++) {
+      selectColor.children[j].style.display = "block"
+    }
+    // reset the menu to show the first option in this group of choices
+    document.querySelector('option[value = "tomato"]').style.display = "block"
+    document.querySelector('option[value = "cornflowerblue"]').style.display = "none"
   }
 })
