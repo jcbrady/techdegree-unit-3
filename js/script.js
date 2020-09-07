@@ -34,13 +34,26 @@ selectDesign.addEventListener("change", e => {
 
   let changed = e.target
   // console.log(changed.options[0].value) // logs "please select a t-shirt theme"
-  console.log(changed.options[1].value) // logs "js puns"
-  console.log(changed.options[2].value) // logs "heart js"
+  //console.log(changed.value)
+  //console.log(changed.options[1].value) // logs "js puns"
+  //console.log(changed.options[2].value) // logs "heart js"
 
-  // conditional NOT WORKING with these values
-  if (changed.options[1].value === "js puns") {
+  // conditional to show/hide the options in select id="color"
+  if (changed.value === "js puns") {
     console.log("JS Puns was selected")
-  } else if (changed.options[2].value === "heart js") {
+    // select the LAST 3 elements and hide them
+    for (let i = 3; i < 6; i++) {
+      // selectColor.children[i].disabled = true
+      selectColor.children[i].style.display = "none"
+      console.log(selectColor.children[i])
+    }
+  } else if (changed.value === "heart js") {
     console.log("I love Javascript was selected")
+    // select the FIRST 3 elements and hide them
+    for (let i = 0; i < 3; i++) {
+      // selectColor.children[i].disabled = true
+      selectColor.children[i].style.display = "none"
+      console.log(selectColor.children[i])
+    }
   }
 })
