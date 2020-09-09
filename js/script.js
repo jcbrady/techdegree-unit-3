@@ -49,6 +49,7 @@ selectDesign.addEventListener("change", e => {
       selectColor.children[j].style.display = "block"
     }
     // reset the menu to show the first option in this group of choices
+    selectColor.children[0].selected = "selected"
     // NOPE, (can't select the value this way):
     // document.querySelector('option[value = "cornflowerblue"]').style.display = "block"
     // document.querySelector('option[value = "tomato"]').style.display = "none"
@@ -64,6 +65,9 @@ selectDesign.addEventListener("change", e => {
     }
     // set the menu to show the first option in this group of choices
     console.log(selectColor.children[3]) // tomato
+    console.log(selectColor)
+    // selectColor.children[3].setAttribute("select", "selected")
+    selectColor.children[3].selected = "selected"
     // console.log(selectColor.options[2])
   }
 })
