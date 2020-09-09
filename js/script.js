@@ -35,17 +35,12 @@ selectDesign.addEventListener("change", e => {
   //'option[value="Select a shirt"]'
 
   let changed = e.target
-  // console.log(changed.options[0].value) // logs "please select a t-shirt theme"
-  //console.log(changed.value)
-  //console.log(changed.options[1].value) // logs "js puns"
-  //console.log(changed.options[2].value) // logs "heart js"
 
   // conditional to show/hide the options in select id="color"
   if (changed.value === "js puns") {
     console.log("JS Puns was selected")
     // select the LAST 3 elements and hide them
     for (let i = 3; i < 6; i++) {
-      // selectColor.children[i].disabled = true
       selectColor.children[i].style.display = "none"
       console.log(selectColor.children[i])
     }
@@ -54,23 +49,21 @@ selectDesign.addEventListener("change", e => {
       selectColor.children[j].style.display = "block"
     }
     // reset the menu to show the first option in this group of choices
-    document.querySelector('option[value = "cornflowerblue"]').style.display = "block"
-    document.querySelector('option[value = "tomato"]').style.display = "none"
+    // NOPE, (can't select the value this way):
+    // document.querySelector('option[value = "cornflowerblue"]').style.display = "block"
+    // document.querySelector('option[value = "tomato"]').style.display = "none"
   } else if (changed.value === "heart js") {
     console.log("I love Javascript was selected")
     // select the FIRST 3 elements and hide them
     for (let i = 0; i < 3; i++) {
-      // selectColor.children[i].disabled = true
       selectColor.children[i].style.display = "none"
-      console.log(selectColor.children[i])
-      // console.log(selectColor.options[i])
     }
     // select the LAST 3 elements and show them
     for (let j = 3; j < 6; j++) {
       selectColor.children[j].style.display = "block"
     }
-    // reset the menu to show the first option in this group of choices
-    document.querySelector('option[value = "tomato"]').style.display = "block"
-    document.querySelector('option[value = "cornflowerblue"]').style.display = "none"
+    // set the menu to show the first option in this group of choices
+    console.log(selectColor.children[3]) // tomato
+    // console.log(selectColor.options[2])
   }
 })
