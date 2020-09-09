@@ -1,3 +1,5 @@
+//* To do: Declare all globals at the top of the file
+
 // *******************************
 // PAGE SETUP - If user has Javascript
 // *******************************
