@@ -1,73 +1,71 @@
-// use javascript instead of autofocus in html to select the first form field on page load.
+// *******************************
+// PAGE SETUP - If user has Javascript
+// *******************************
+
+// Use javascript instead of autofocus in html to select the first form field on page load.
 document.getElementById("name").focus()
 
-// *This is the only part of the project where index.html needs to be changed.
+// * This is the only part of the project where index.html needs to be changed.
 // initially hide the "other" input for job roles
 const otherJob = document.getElementById("other-title")
-// otherJob.style.display = "hidden" doesn't work!!!
 otherJob.setAttribute("type", "hidden")
-// showing the other field
+// +++++++++++++++++++++++++++++++
+// COME BACK TO THIS WITH A CONDITIONAL - showing the other field if other is selected
 if (false) {
   otherJob.setAttribute("type", "text")
 }
 
-// NEXT SECTION - SELECT T-SHIRT'S
+// *******************************
+// T-SHIRT SECTION - Select T-Shirt's
+// *******************************
 
+// Get the select element with ID "design"
+// These are the main T-Shirt options: "JS Puns" or "I Heart JS"
 const selectDesign = document.getElementById("design")
+// Add text to the select dropdown menu
 selectDesign.firstElementChild.innerHTML = "Please Select a T-shirt Theme"
-
+// Get the select element with the ID "color"
+// Get the parent div with the ID "shirt-colors" to target label element
+// Hide both the label and select elements
 const selectColor = document.getElementById("color")
-selectColor.style.display = "none"
-// document.getElementById("color").style.visibility = "hidden"
-
-// hide label for Colors
 const shirtColorDiv = document.getElementById("shirt-colors")
+selectColor.style.display = "none"
 shirtColorDiv.firstElementChild.style.display = "none"
 
-// eventlisteners on select elements
-
+// Add event listener with "change" event on the "design" select element
+// This conditionally shows the relevant elements in the "color" select menu
 selectDesign.addEventListener("change", e => {
-  // show label for Colors
-  shirtColorDiv.firstElementChild.style.display = "block"
-  // show color select menu
+  // Show the "color" select menu and it's label
   selectColor.style.display = "block"
-
-  //'option[value="Select a shirt"]'
-
+  shirtColorDiv.firstElementChild.style.display = "block"
+  // Declare the changed variable when user selects a design option - select id="design"
   let changed = e.target
-
-  // conditional to show/hide the options in select id="color"
+  // conditional to show/hide the options - select id="color"
   if (changed.value === "js puns") {
-    console.log("JS Puns was selected")
-    // select the LAST 3 elements and hide them
+    // select the LAST 3 elements and hide them (loop 1)
     for (let i = 3; i < 6; i++) {
       selectColor.children[i].style.display = "none"
-      console.log(selectColor.children[i])
     }
-    // select the FIRST 3 elements and show them
+    // select the FIRST 3 elements and show them (loop 2)
     for (let j = 0; j < 3; j++) {
       selectColor.children[j].style.display = "block"
     }
-    // reset the menu to show the first option in this group of choices
+    // reset the menu to show the first option in this group of choices (outside of loop)
     selectColor.children[0].selected = "selected"
-    // NOPE, (can't select the value this way):
-    // document.querySelector('option[value = "cornflowerblue"]').style.display = "block"
-    // document.querySelector('option[value = "tomato"]').style.display = "none"
   } else if (changed.value === "heart js") {
-    console.log("I love Javascript was selected")
-    // select the FIRST 3 elements and hide them
+    // select the FIRST 3 elements and hide them (loop 1)
     for (let i = 0; i < 3; i++) {
       selectColor.children[i].style.display = "none"
     }
-    // select the LAST 3 elements and show them
+    // select the LAST 3 elements and show them (loop 2)
     for (let j = 3; j < 6; j++) {
       selectColor.children[j].style.display = "block"
     }
-    // set the menu to show the first option in this group of choices
-    console.log(selectColor.children[3]) // tomato
-    console.log(selectColor)
-    // selectColor.children[3].setAttribute("select", "selected")
+    // set the menu to show the first option in this group of choices (outside of loop)
     selectColor.children[3].selected = "selected"
-    // console.log(selectColor.options[2])
   }
 })
+
+// *******************************
+// ACTIVITY SECTION -
+// *******************************
