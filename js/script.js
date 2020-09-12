@@ -27,7 +27,7 @@ const selectDesign = document.getElementById("design")
 // Add text to the select dropdown menu
 selectDesign.firstElementChild.innerHTML = "Please Select a T-shirt Theme"
 // Get the select element with the ID "color"
-// Get the parent div with the ID "shirt-colors" to target label element
+// Get the parent div with the ID "shirt-colors" to target the label element
 // Hide both the label and select elements
 const selectColor = document.getElementById("color")
 const shirtColorDiv = document.getElementById("shirt-colors")
@@ -71,3 +71,19 @@ selectDesign.addEventListener("change", e => {
 // *******************************
 // ACTIVITY SECTION -
 // *******************************
+
+// Create a DOM element, store it in a global variable and append it to the `.activites` section.
+// Create a global variable to store total activity cost
+const addedElement = document.createElement("div")
+let activityCost = 0
+let activity = document.querySelector(".activities")
+activity.appendChild(addedElement)
+
+console.log(addedElement)
+
+// Add a change event listener to the activity section.
+// Add a variable to reference the DOM `input` element that was just checked
+activity.addEventListener("change", function (e) {
+  let checked = e.target
+  console.log(checked)
+})
