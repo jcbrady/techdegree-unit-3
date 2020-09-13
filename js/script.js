@@ -74,16 +74,36 @@ selectDesign.addEventListener("change", e => {
 
 // Create a DOM element, store it in a global variable and append it to the `.activites` section.
 // Create a global variable to store total activity cost
-const addedElement = document.createElement("div")
-let activityCost = 0
+const costElement = document.createElement("div")
+let totalCost = 0
 let activity = document.querySelector(".activities")
-activity.appendChild(addedElement)
+activity.appendChild(costElement)
 
-console.log(addedElement)
+// console.log(costElement)
 
 // Add a change event listener to the activity section.
 // Add a variable to reference the DOM `input` element that was just checked
+// Add a cost variable on data-cost attribute to get the cost
+// If checked add to totalCost and if unchecked subtract from totalCost
+
 activity.addEventListener("change", function (e) {
-  let checked = e.target
-  console.log(checked)
+  let check = e.target
+  let cost = check.getAttribute("data-cost")
+  cost = parseInt(cost)
+
+  // console.log(parseInt(cost))
+  // console.log(check)
+
+  if (check.checked === true) {
+    //console.log(check.getAttribute("name"))
+    //console.log("is now checked")
+    totalCost = totalCost + cost
+    console.log(totalCost)
+  } else if (check.checked === false) {
+    //console.log(check.getAttribute("name"))
+    //console.log("is now unchecked")
+    totalCost = totalCost - cost
+    console.log(totalCost)
+  }
+  costElement.textContent = "Total: $ " + totalCost
 })
