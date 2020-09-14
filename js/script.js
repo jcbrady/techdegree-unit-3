@@ -95,9 +95,6 @@ activity.addEventListener("change", function (e) {
 
   cost = parseInt(cost)
 
-  // console.log(parseInt(cost))
-  // console.log(check)
-
   if (check.checked === true) {
     //console.log(check.getAttribute("name"))
     //console.log("is now checked")
@@ -131,21 +128,40 @@ activity.addEventListener("change", function (e) {
   // depending on whether the clicked activity was checked or unchecked. An `if/else` statement
   // will help here:
 
+  //////////////////////////////////////////////////
   // console.log(check) //  the input element that was clicked (checked or unchecked)
-  console.log(dayAndTime) // check's day and time data-attribute
-  // console.log(activityCheckboxes) // the nodelist
+  // console.log(dayAndTime) // check's day and time data-attribute
+  // console.log(activityCheckboxes) // the nodelist of inputs
 
+  // Loop through all the input elements
   for (let i = 0; i < activityCheckboxes.length; i++) {
     activityCheckboxes[i] // individual inputs
     // variable to get the current loop element's data-day-and-time attribute
     let inputAttrubute = activityCheckboxes[i].getAttribute("data-day-and-time")
 
+    // if day and time of other activities are the same as the day and time as the checked/unchecked checkbox
+    // && it is not the current checked/unchecked checkbox (from the loop)
+    // deselect the element if checked
+    // select the element if unchecked
     if (dayAndTime === inputAttrubute && check !== activityCheckboxes[i]) {
-      console.log("ALERT: conflicting schedule: " + dayAndTime + " IS AT THE SAME TIME AS " + inputAttrubute)
+      //console.log("ALERT: conflicting schedule: " + dayAndTime + " IS AT THE SAME TIME AS " + inputAttrubute)
       // check.disabled = false
-      activityCheckboxes[i].disabled = true
+
+      console.log(check) // input that was clicked on
+      console.log(activityCheckboxes[i]) // an input that matches checks data-day-and-time attribute
+
+      // disable it if checked
+      // activityCheckboxes[i].disabled = true
+      // enable it if unchecked
+      console.log(activityCheckboxes[i].disabled)
+      // Toggle checkboxes
+      if (activityCheckboxes[i].disabled) {
+        activityCheckboxes[i].disabled = false
+      } else {
+        activityCheckboxes[i].disabled = true
+      }
     } else {
-      console.log('test the "if" condition with the else statement')
+      console.log('testing the "if" condition with the else statement')
       // activityCheckboxes[i].disabled = false
     }
   }
