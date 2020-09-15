@@ -11,7 +11,7 @@ document.getElementById("name").focus()
 // * This is the only part of the project where index.html needs to be changed.
 // initially hide the "other" input for job roles
 const otherJob = document.getElementById("other-title")
-const jobTitleOther = document.querySelector('option[value="other"]')
+// const jobTitleOther = document.querySelector('option[value="other"]')
 const jobTitle = document.getElementById("title")
 otherJob.setAttribute("type", "hidden")
 // +++++++++++++++++++++++++++++++
@@ -137,11 +137,6 @@ activity.addEventListener("change", function (e) {
   }
   costElement.textContent = "Total: $" + totalCost
 
-  //////////////////////////////////////////////////
-  // console.log(check) //  the input element that was clicked (checked or unchecked)
-  // console.log(dayAndTime) // check's day and time data-attribute
-  // console.log(activityCheckboxes) // the nodelist of inputs
-
   // Loop through all the input elements
   for (let i = 0; i < activityCheckboxes.length; i++) {
     activityCheckboxes[i] // individual inputs
@@ -153,14 +148,6 @@ activity.addEventListener("change", function (e) {
     // deselect the element if checked
     // select the element if unchecked
     if (dayAndTime === inputAttrubute && check !== activityCheckboxes[i]) {
-      // console.log("ALERT: conflicting schedule: " + dayAndTime + " IS AT THE SAME TIME AS " + inputAttrubute)
-      // check.disabled = false
-
-      // console.log(check) // input that was clicked on
-      // console.log(activityCheckboxes[i]) // an input that matches checks data-day-and-time attribute
-
-      // toggle checkboxes disable it if checked enable it if unchecked
-      // console.log(activityCheckboxes[i].disabled)
       if (activityCheckboxes[i].disabled) {
         activityCheckboxes[i].disabled = false
       } else {
@@ -171,5 +158,31 @@ activity.addEventListener("change", function (e) {
 })
 
 // *******************************
-// PAYMENT SECTION -
+// PAYMENT INFO SECTION -
 // *******************************
+
+// Initially, the credit card section should be selected and displayed in the form, and the other two
+// payment options should be hidden. The user should be able to change payment options at any
+// time, but shouldn’t be able to select the “Select Payment Method” option. So you’ll need to
+// check the currently selected payment option, and hide and show the payment sections in the
+// form accordingly.
+const payment = document.getElementById("payment")
+payment.firstElementChild.style.display = "none"
+payment.children[1].selected = "selected"
+
+// DOM practice ... Other ways to select these option elements:
+console.log(document.querySelector('#payment option[value="select method"]'))
+console.log(document.querySelector('#payment option[value="credit card"]'))
+console.log(payment.options[1])
+console.log(payment.options[0].nextElementSibling)
+console.log(payment.options[2].previousElementSibling)
+
+// ● Hide the “Select Payment Method” `option` so it doesn’t show up in the drop-down
+// menu.
+// ● Get the value of the payment select element, and if it’s equal to ‘credit card’, set the
+// credit card payment section in the form to show, and set the other two options to hide.
+// ● Repeat the above step with the PayPal and BitCoin options so that the selected
+// payment is shown and the others are hidden.
+
+// name, email, and activities are always required
+// Payment has 3 inputs and only needs validation if credit card is selected
