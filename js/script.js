@@ -100,7 +100,8 @@ selectDesign.addEventListener("change", e => {
 
 // *******************************
 // ACTIVITY SECTION
-// Make sure there are not conflicts
+// Make sure there are not conflicts in day and time
+// Also, REVISIT/ASK: Should the entire line be grayed out or just the textbox? (Video shows entire line is dimmed)
 // *******************************
 
 // Create a DOM element, store it in a global variable and append it to the `.activites` section.
@@ -166,23 +167,34 @@ activity.addEventListener("change", function (e) {
 // time, but shouldn’t be able to select the “Select Payment Method” option. So you’ll need to
 // check the currently selected payment option, and hide and show the payment sections in the
 // form accordingly.
+// ● Hide the “Select Payment Method” `option` so it doesn’t show up in the drop-down
+// menu.
+
+// initially activate credit card payment option
 const payment = document.getElementById("payment")
 payment.firstElementChild.style.display = "none"
 payment.children[1].selected = "selected"
+// initially hide other payment options
+const paypal = document.getElementById("paypal")
+const bitcoin = document.getElementById("bitcoin")
+paypal.style.display = "none"
+bitcoin.style.display = "none"
 
-// DOM practice ... Other ways to select these option elements:
-console.log(document.querySelector('#payment option[value="select method"]'))
-console.log(document.querySelector('#payment option[value="credit card"]'))
-console.log(payment.options[1])
-console.log(payment.options[0].nextElementSibling)
-console.log(payment.options[2].previousElementSibling)
-
-// ● Hide the “Select Payment Method” `option` so it doesn’t show up in the drop-down
-// menu.
 // ● Get the value of the payment select element, and if it’s equal to ‘credit card’, set the
 // credit card payment section in the form to show, and set the other two options to hide.
+// Based on what they select, a different message will appear
+
+payment.addEventListener("change", function (e) {
+  console.log("has been changed")
+  // if statement goes here, maybe and if/else or switch case (checks 3 cases)?
+})
+
 // ● Repeat the above step with the PayPal and BitCoin options so that the selected
 // payment is shown and the others are hidden.
+
+// *******************************
+// PAYMENT INFO SECTION -
+// *******************************
 
 // name, email, and activities are always required
 // Payment has 3 inputs and only needs validation if credit card is selected
