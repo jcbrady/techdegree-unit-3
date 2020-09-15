@@ -2,6 +2,7 @@
 
 // *******************************
 // PAGE SETUP - If user has Javascript
+// add an other field - COMPLETE THIS LATER
 // *******************************
 
 // Use javascript instead of autofocus in html to select the first form field on page load.
@@ -10,15 +11,44 @@ document.getElementById("name").focus()
 // * This is the only part of the project where index.html needs to be changed.
 // initially hide the "other" input for job roles
 const otherJob = document.getElementById("other-title")
+const jobTitleOther = document.querySelector('option[value="other"]')
+const jobTitle = document.getElementById("title")
 otherJob.setAttribute("type", "hidden")
 // +++++++++++++++++++++++++++++++
-// COME BACK TO THIS WITH A CONDITIONAL - showing the other field if other is selected
+// show the other element if it's selected
+// const selectJob = document.querySelector('option[value="other"]')
+
+/////////////// loop through them all and get the value = to other //////////////
+/// or maybe shortcut it by just using [6]?
+////  if selected (show the other text input)
+
+// console.log(otherJob)
+// console.log(jobTitle)
+
+jobTitle.addEventListener("change", function (e) {
+  // console.log("eventListener active")
+  // console.log(e.target.value) // select menu
+  //  console.log(e.target.lastElementChild) // other
+
+  if (e.target.value === "other") {
+    otherJob.setAttribute("type", "text")
+  } else {
+    otherJob.setAttribute("type", "hidden")
+  }
+
+  // old delete this, what did I wight here?
+  if (e.target === e.target.lastElementChild) {
+    otherJob.setAttribute("type", "text")
+  }
+})
+
 if (false) {
   otherJob.setAttribute("type", "text")
 }
 
 // *******************************
 // T-SHIRT SECTION - Select T-Shirt's
+// Show certain options based on selection
 // *******************************
 
 // Get the select element with ID "design"
@@ -69,7 +99,8 @@ selectDesign.addEventListener("change", e => {
 })
 
 // *******************************
-// ACTIVITY SECTION -
+// ACTIVITY SECTION
+// Make sure there are not conflicts
 // *******************************
 
 // Create a DOM element, store it in a global variable and append it to the `.activites` section.
@@ -78,8 +109,6 @@ const costElement = document.createElement("div")
 let totalCost = 0
 let activity = document.querySelector(".activities")
 activity.appendChild(costElement)
-
-// console.log(costElement)
 
 // Add a change event listener to the activity section.
 // Add a variable to reference the DOM `input` element that was just checked
@@ -108,26 +137,6 @@ activity.addEventListener("change", function (e) {
   }
   costElement.textContent = "Total: $" + totalCost
 
-  // ● When an activity is checked, disable any activity that occurs at the same day and time
-  // (i.e. "conflicting activities") without disabling the activity that was just checked.
-  // ● And when an activity is unchecked, you want to enable any conflicting activities.
-  // To do this, you’ll need to loop over all the checkbox inputs in the Activity section. It will be
-  // helpful to create a variable that targets the activity input element at the current iteration of the
-  // loop. Remember, you do this with bracket notation, using the loop iterator in the brackets.
-  // Something like this: `input[i]`. Be sure to log out the variable you just created to test its value.
-
-  // ● First, does the activity occur at the same day and time as the activity that was just
-  // clicked? We can check this by seeing if the activity in the current loop iteration has a
-  // `data-day-and-time` attribute that is equal to the `data-day-and-time` attribute of the
-  // element that was just clicked.
-  // ● Second, is the activity different than the activity that was just clicked? We can check
-  // this by seeing if the activity that was just clicked is not equal to the activity in the
-  // current loop iteration.
-  // Both of these conditions should be checked in a single if statement using the `&&` operator.
-  // If both conditions evaluate to "true", then this activity needs to be disabled or enabled
-  // depending on whether the clicked activity was checked or unchecked. An `if/else` statement
-  // will help here:
-
   //////////////////////////////////////////////////
   // console.log(check) //  the input element that was clicked (checked or unchecked)
   // console.log(dayAndTime) // check's day and time data-attribute
@@ -144,25 +153,23 @@ activity.addEventListener("change", function (e) {
     // deselect the element if checked
     // select the element if unchecked
     if (dayAndTime === inputAttrubute && check !== activityCheckboxes[i]) {
-      //console.log("ALERT: conflicting schedule: " + dayAndTime + " IS AT THE SAME TIME AS " + inputAttrubute)
+      // console.log("ALERT: conflicting schedule: " + dayAndTime + " IS AT THE SAME TIME AS " + inputAttrubute)
       // check.disabled = false
 
-      console.log(check) // input that was clicked on
-      console.log(activityCheckboxes[i]) // an input that matches checks data-day-and-time attribute
+      // console.log(check) // input that was clicked on
+      // console.log(activityCheckboxes[i]) // an input that matches checks data-day-and-time attribute
 
-      // disable it if checked
-      // activityCheckboxes[i].disabled = true
-      // enable it if unchecked
-      console.log(activityCheckboxes[i].disabled)
-      // Toggle checkboxes
+      // toggle checkboxes disable it if checked enable it if unchecked
+      // console.log(activityCheckboxes[i].disabled)
       if (activityCheckboxes[i].disabled) {
         activityCheckboxes[i].disabled = false
       } else {
         activityCheckboxes[i].disabled = true
       }
-    } else {
-      console.log('testing the "if" condition with the else statement')
-      // activityCheckboxes[i].disabled = false
     }
   }
 })
+
+// *******************************
+// PAYMENT SECTION -
+// *******************************
