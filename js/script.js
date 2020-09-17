@@ -170,13 +170,13 @@ activity.addEventListener("change", function (e) {
 // ● Hide the “Select Payment Method” `option` so it doesn’t show up in the drop-down
 // menu.
 
-// initially activate credit card payment option
+// initially activate credit card payment option & hide other payment options
 const payment = document.getElementById("payment")
-payment.firstElementChild.style.display = "none"
-payment.children[1].selected = "selected"
-// initially hide other payment options
+const credit_card = document.getElementById("credit-card")
 const paypal = document.getElementById("paypal")
 const bitcoin = document.getElementById("bitcoin")
+payment.firstElementChild.style.display = "none"
+payment.children[1].selected = "selected"
 paypal.style.display = "none"
 bitcoin.style.display = "none"
 
@@ -185,12 +185,36 @@ bitcoin.style.display = "none"
 // Based on what they select, a different message will appear
 
 payment.addEventListener("change", function (e) {
-  console.log("has been changed")
-  // if statement goes here, maybe and if/else or switch case (checks 3 cases)?
-})
+  //console.log("has been changed")
 
-// ● Repeat the above step with the PayPal and BitCoin options so that the selected
-// payment is shown and the others are hidden.
+  // console.log(e.target.value === "bitcoin") // true or false
+  // console.log(e.target.value)
+
+  // no need for this for loop (Delete)
+  //for (let i = 1; i < payment.length; i++) {
+
+  if (e.target.value === "credit card") {
+    // console.log("You selected Credit Card")
+    // show credit card, hide others
+    credit_card.style.display = "block"
+    paypal.style.display = "none"
+    bitcoin.style.display = "none"
+  } else if (e.target.value === "paypal") {
+    // console.log("You selected Paypal")
+    // show paypal, hide others
+    credit_card.style.display = "none"
+    paypal.style.display = "block"
+    bitcoin.style.display = "none"
+  } else if (e.target.value === "bitcoin") {
+    // console.log("You selected Bitcoin")
+    // show bitcoin, hide others
+    credit_card.style.display = "none"
+    paypal.style.display = "none"
+    bitcoin.style.display = "block"
+  }
+
+  //}
+})
 
 // *******************************
 // PAYMENT INFO SECTION -
