@@ -162,14 +162,6 @@ activity.addEventListener("change", function (e) {
 // PAYMENT INFO SECTION -
 // *******************************
 
-// Initially, the credit card section should be selected and displayed in the form, and the other two
-// payment options should be hidden. The user should be able to change payment options at any
-// time, but shouldn’t be able to select the “Select Payment Method” option. So you’ll need to
-// check the currently selected payment option, and hide and show the payment sections in the
-// form accordingly.
-// ● Hide the “Select Payment Method” `option` so it doesn’t show up in the drop-down
-// menu.
-
 // initially activate credit card payment option & hide other payment options
 const payment = document.getElementById("payment")
 const credit_card = document.getElementById("credit-card")
@@ -179,45 +171,28 @@ payment.firstElementChild.style.display = "none"
 payment.children[1].selected = "selected"
 paypal.style.display = "none"
 bitcoin.style.display = "none"
-
-// ● Get the value of the payment select element, and if it’s equal to ‘credit card’, set the
-// credit card payment section in the form to show, and set the other two options to hide.
-// Based on what they select, a different message will appear
-
+// add event listener to hide and show the various inputs
 payment.addEventListener("change", function (e) {
-  //console.log("has been changed")
-
-  // console.log(e.target.value === "bitcoin") // true or false
-  // console.log(e.target.value)
-
-  // no need for this for loop (Delete)
-  //for (let i = 1; i < payment.length; i++) {
-
   if (e.target.value === "credit card") {
-    // console.log("You selected Credit Card")
     // show credit card, hide others
     credit_card.style.display = "block"
     paypal.style.display = "none"
     bitcoin.style.display = "none"
   } else if (e.target.value === "paypal") {
-    // console.log("You selected Paypal")
     // show paypal, hide others
     credit_card.style.display = "none"
     paypal.style.display = "block"
     bitcoin.style.display = "none"
   } else if (e.target.value === "bitcoin") {
-    // console.log("You selected Bitcoin")
     // show bitcoin, hide others
     credit_card.style.display = "none"
     paypal.style.display = "none"
     bitcoin.style.display = "block"
   }
-
-  //}
 })
 
 // *******************************
-// PAYMENT INFO SECTION -
+// FORM VALIDATION AND VALIDATION MESSAGES
 // *******************************
 
 // name, email, and activities are always required
