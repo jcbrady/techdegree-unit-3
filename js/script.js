@@ -193,13 +193,13 @@ const nameValidator = () => {
   // console.log(nameLabel)
   // error message if name has less than one character
   if (name.value.length !== 0) {
-    console.log(getSpan) // null unless there was a previous error
+    console.log(getSpan)
     if (getSpan) {
       nameLabel.removeChild(getSpan)
     }
     console.log("check passes, there are more than 0 characters!")
     console.log(errorName)
-    console.log(name)
+    console.log(name.parentNode)
     console.log(nameLabel)
     name.style.border = "2px solid white"
     return true
