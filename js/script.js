@@ -9,8 +9,11 @@
 let name = document.getElementById("name")
 name.focus()
 
-let email = document.getElementById("mail")
-let activity = document.querySelector(".activities") // fieldset element
+const email = document.getElementById("mail")
+const activity = document.querySelector(".activities") // fieldset element
+const activityLabelInputs = document.querySelectorAll(".activities label input")
+//const form = document.querySelector("form")
+
 // * This is the only part of the project where index.html needs to be changed.
 // initially hide the "other" input for job roles
 const otherJob = document.getElementById("other-title")
@@ -135,8 +138,10 @@ activity.addEventListener("change", function (e) {
     if (dayAndTime === inputAttrubute && check !== activityCheckboxes[i]) {
       if (activityCheckboxes[i].disabled) {
         activityCheckboxes[i].disabled = false
+        //activityLabelInputs.style.color = ""
       } else {
         activityCheckboxes[i].disabled = true
+        // console.log(activityLabelInputs[i]) // How to target the text in these inputs
       }
     }
   }
@@ -213,7 +218,7 @@ const nameValidator = () => {
     // using else/if instead of just else, fixes multiple error messages stacking up
   } else if (!getSpan) {
     errorName.style.color = "red"
-    errorName.innerHTML = " The name field can't be empty."
+    errorName.innerHTML = " The name field is required."
     nameLabel.appendChild(errorName)
     name.style.border = "2px solid red"
     return false
@@ -234,11 +239,11 @@ const emailValidator = () => {
   //console.log(getSpan) // null at first because it isn't in the document
   // for regex
   const emailValue = email.value
-  console.log(emailValue)
+  //console.log(emailValue)
   const atSymbol = emailValue.indexOf("@")
-  console.log(atSymbol)
+  //console.log(atSymbol)
   const dot = emailValue.lastIndexOf(".")
-  console.log(dot)
+  //console.log(dot)
 
   // if (true) {
   //   console.log("The @ and . validity check in email")
@@ -255,7 +260,7 @@ const emailValidator = () => {
     // else/if fixes multiple error messages stacking up
   } else if (!getSpan) {
     errorEmail.style.color = "red"
-    errorEmail.innerHTML = " Please enter a valid email"
+    errorEmail.innerHTML = " Please enter a valid email."
     emailLabel.appendChild(errorEmail)
     email.style.border = "2px solid red"
     return false
@@ -263,7 +268,60 @@ const emailValidator = () => {
 }
 
 // helper function to validate activities
-const activityValidator = () => {}
+const activityValidator = () => {
+  // at least one box must be checked
+  const activityLabels = document.querySelectorAll(".activities label input")
+  const activityInsert = document.querySelector(".activities label")
+  // console.log(activityInsert) // label element
+  // console.log(activityLabels[0]) // input name="all"
+  // console.log(activityLabels[1]) // input name="js-frameworks"
+  // console.log(activityLabels[2]) // input name="js-libs"
+  let errorActivity = document.createElement("span")
+  errorActivity.style.color = "red"
+  errorActivity.innerHTML = "Please select at least one activity."
+  // console.log(errorActivity)
+  errorActivity.setAttribute("id", "activityError")
+  let getSpan = document.getElementById("activityError")
+  //console.log(getSpan)
+
+  // loop through the checkbox inputs and see if one's checked
+  for (let i = 0; i < activityLabels.length; i++) {
+    if (activityLabels[i].checked == true) {
+      console.log(activityLabels[i]) // does this only get the first one?
+      console.log("pass")
+      // if getSpan exists, remove it
+      if (getSpan) {
+        activity.removeChild(errorActivity)
+      }
+      return true
+    } else {
+      console.log("fail")
+      // add error message (above the first label element)
+      activity.insertBefore(errorActivity, activityInsert)
+      // if getSpan exists, then remove it
+      if (getSpan) {
+        activity.removeChild(errorActivity)
+      }
+      //activityLegend.firstElementChild.appendChild(errorActivity)
+      return false
+    }
+  }
+
+  // outside of loop append the message
+  // if errorActivity doesn't exist in the document, add it
+}
+
+// for (let i = 0; i < activityLabels.length; i++) {
+//   console.log(activityLabels[i]) //.hasAttribute("checked"))
+
+//   if (activityLabels[i].checked === true) {
+//     console.log("at least one activity has been checked.")
+//     return true
+//   } else {
+//     console.log("no activities were checked, please select at least one activity")
+//     return false
+//   }
+// }
 
 // helper function to validate credit card
 const creditCardValidator = () => {}
@@ -274,3 +332,4 @@ const creditCardValidator = () => {}
 // eventlisteners
 name.addEventListener("blur", nameValidator)
 email.addEventListener("blur", emailValidator)
+activity.addEventListener("mouseout", activityValidator)
