@@ -1,4 +1,4 @@
-//* To do: Declare all globals at the top of the file
+//* Should I declare all globals at the top of the file?
 
 // *******************************
 // PAGE SETUP - If user has Javascript
@@ -6,45 +6,28 @@
 // *******************************
 
 // Use javascript instead of autofocus in html to select the first form field on page load.
-document.getElementById("name").focus()
+let name = document.getElementById("name")
+name.focus()
 
 // * This is the only part of the project where index.html needs to be changed.
 // initially hide the "other" input for job roles
 const otherJob = document.getElementById("other-title")
-// const jobTitleOther = document.querySelector('option[value="other"]')
 const jobTitle = document.getElementById("title")
+
 otherJob.setAttribute("type", "hidden")
-// +++++++++++++++++++++++++++++++
-// show the other element if it's selected
-// const selectJob = document.querySelector('option[value="other"]')
 
-/////////////// loop through them all and get the value = to other //////////////
-/// or maybe shortcut it by just using [6]?
-////  if selected (show the other text input)
-
-// console.log(otherJob)
-// console.log(jobTitle)
-
+// show other text input if "other" option is selected
 jobTitle.addEventListener("change", function (e) {
-  // console.log("eventListener active")
-  // console.log(e.target.value) // select menu
-  //  console.log(e.target.lastElementChild) // other
-
   if (e.target.value === "other") {
     otherJob.setAttribute("type", "text")
   } else {
     otherJob.setAttribute("type", "hidden")
   }
 
-  // old delete this, what did I wight here?
-  if (e.target === e.target.lastElementChild) {
-    otherJob.setAttribute("type", "text")
-  }
+  // if (e.target === e.target.lastElementChild) {
+  //   otherJob.setAttribute("type", "text")
+  // }
 })
-
-if (false) {
-  otherJob.setAttribute("type", "text")
-}
 
 // *******************************
 // T-SHIRT SECTION - Select T-Shirt's
@@ -197,3 +180,29 @@ payment.addEventListener("change", function (e) {
 
 // name, email, and activities are always required
 // Payment has 3 inputs and only needs validation if credit card is selected
+//
+//
+// helper function and error message to validate "name"
+const nameValidator = () => {
+  console.log(name.value.length)
+  const nameLabel = document.getElementsByTagName("label")[0]
+  let errorDiv = document.createElement("span")
+  console.log(nameLabel)
+  // error message if name has less than one character
+  if (name.value.length < 2) {
+    errorDiv.style.color = "red"
+    errorDiv.innerHTML = " Whoops! There's an error with the name!"
+    nameLabel.appendChild(errorDiv)
+    name.style.border = "2px solid red"
+    return false
+  } else {
+    nameLabel.removeChild(errorDiv)
+    name.style.border = "2px solid white"
+    return true
+  }
+}
+// helper function to validate email
+const emailValidator = () => {}
+
+// eventlisteners
+name.addEventListener("blur", nameValidator)
