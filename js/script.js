@@ -184,21 +184,31 @@ payment.addEventListener("change", function (e) {
 //
 // helper function and error message to validate "name"
 const nameValidator = () => {
-  console.log(name.value.length)
+  //console.log(name.value.length)
   const nameLabel = document.getElementsByTagName("label")[0]
-  let errorDiv = document.createElement("span")
-  console.log(nameLabel)
+  let errorName = document.createElement("span")
+  errorName.setAttribute("id", "nameError")
+  let getSpan = document.getElementById("nameError")
+  // let getSpan = document.getElementById("nameError")
+  // console.log(nameLabel)
   // error message if name has less than one character
-  if (name.value.length < 2) {
-    errorDiv.style.color = "red"
-    errorDiv.innerHTML = " Whoops! There's an error with the name!"
-    nameLabel.appendChild(errorDiv)
-    name.style.border = "2px solid red"
-    return false
-  } else {
-    nameLabel.removeChild(errorDiv)
+  if (name.value.length !== 0) {
+    console.log(getSpan) // null unless there was a previous error
+    if (getSpan) {
+      nameLabel.removeChild(getSpan)
+    }
+    console.log("check passes, there are more than 0 characters!")
+    console.log(errorName)
+    console.log(name)
+    console.log(nameLabel)
     name.style.border = "2px solid white"
     return true
+  } else {
+    errorName.style.color = "red"
+    errorName.innerHTML = " The name field can't be empty."
+    nameLabel.appendChild(errorName)
+    name.style.border = "2px solid red"
+    return false
   }
 }
 // helper function to validate email
