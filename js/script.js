@@ -9,6 +9,8 @@
 let name = document.getElementById("name")
 name.focus()
 
+let email = document.getElementById("mail")
+let activity = document.querySelector(".activities") // fieldset element
 // * This is the only part of the project where index.html needs to be changed.
 // initially hide the "other" input for job roles
 const otherJob = document.getElementById("other-title")
@@ -91,7 +93,6 @@ selectDesign.addEventListener("change", e => {
 // Create a global variable to store total activity cost
 const costElement = document.createElement("div")
 let totalCost = 0
-let activity = document.querySelector(".activities")
 activity.appendChild(costElement)
 
 // Add a change event listener to the activity section.
@@ -148,6 +149,9 @@ activity.addEventListener("change", function (e) {
 // initially activate credit card payment option & hide other payment options
 const payment = document.getElementById("payment")
 const credit_card = document.getElementById("credit-card")
+// console.log(payment)
+// console.log(credit_card)
+// console.log(activity)
 const paypal = document.getElementById("paypal")
 const bitcoin = document.getElementById("bitcoin")
 payment.firstElementChild.style.display = "none"
@@ -181,29 +185,33 @@ payment.addEventListener("change", function (e) {
 // name, email, and activities are always required
 // Payment has 3 inputs and only needs validation if credit card is selected
 //
-//
+// HELPER FUNCTIONS
 // helper function and error message to validate "name"
 const nameValidator = () => {
   //console.log(name.value.length)
+  // get the label element (to append span) and create span element for an error message
+  // set an id attribute so it can be selected (if present)
+  // If present getSpan selects the id so it can be referenced in the if/else statement
   const nameLabel = document.getElementsByTagName("label")[0]
   let errorName = document.createElement("span")
   errorName.setAttribute("id", "nameError")
   let getSpan = document.getElementById("nameError")
-  // let getSpan = document.getElementById("nameError")
-  // console.log(nameLabel)
-  // error message if name has less than one character
+
+  // error message if name is empty
   if (name.value.length !== 0) {
-    console.log(getSpan)
+    // error message removed if there was a previous error
     if (getSpan) {
       nameLabel.removeChild(getSpan)
     }
-    console.log("check passes, there are more than 0 characters!")
-    console.log(errorName)
-    console.log(name.parentNode)
-    console.log(nameLabel)
-    name.style.border = "2px solid white"
+    //console.log("check passes, there are more than 0 characters!")
+    //console.log(errorName)
+    //console.log(name.parentNode)
+    //console.log(nameLabel)
+    //name.style.border = "2px solid white"
+    name.style.border = "1px"
     return true
-  } else {
+    // using else/if instead of just else, fixes multiple error messages stacking up
+  } else if (!getSpan) {
     errorName.style.color = "red"
     errorName.innerHTML = " The name field can't be empty."
     nameLabel.appendChild(errorName)
@@ -211,8 +219,58 @@ const nameValidator = () => {
     return false
   }
 }
-// helper function to validate email
-const emailValidator = () => {}
 
+// helper function to validate email
+const emailValidator = () => {
+  // get the label element (to append span) and create span element for an error message
+  // set an id attribute so it can be selected (if present)
+  // If present, getSpan selects the id so it can be referenced in the if/else statement
+  const emailLabel = document.getElementsByTagName("label")[1]
+  //console.log(emailLabel)
+  let errorEmail = document.createElement("span")
+  //console.log(errorEmail)
+  errorEmail.setAttribute("id", "emailError")
+  let getSpan = document.getElementById("emailError")
+  //console.log(getSpan) // null at first because it isn't in the document
+  // for regex
+  const emailValue = email.value
+  console.log(emailValue)
+  const atSymbol = emailValue.indexOf("@")
+  console.log(atSymbol)
+  const dot = emailValue.lastIndexOf(".")
+  console.log(dot)
+
+  // if (true) {
+  //   console.log("The @ and . validity check in email")
+  // }
+
+  // Check 1: error message if email is empty
+  if (email.value.length !== 0 && atSymbol > 1 && dot > atSymbol + 1) {
+    // error message removed if there was a previous error
+    if (getSpan) {
+      emailLabel.removeChild(getSpan)
+    }
+    email.style.border = "1px"
+    return true
+    // else/if fixes multiple error messages stacking up
+  } else if (!getSpan) {
+    errorEmail.style.color = "red"
+    errorEmail.innerHTML = " Please enter a valid email"
+    emailLabel.appendChild(errorEmail)
+    email.style.border = "2px solid red"
+    return false
+  }
+}
+
+// helper function to validate activities
+const activityValidator = () => {}
+
+// helper function to validate credit card
+const creditCardValidator = () => {}
+
+//
+//
+//
 // eventlisteners
 name.addEventListener("blur", nameValidator)
+email.addEventListener("blur", emailValidator)
