@@ -310,6 +310,8 @@ const activityValidator = () => {
       // activity.removeChild(errorActivity)
     } else {
       span.style.display = "block"
+      console.log("check in else:")
+      console.log(check)
     }
     ////// I'm guessing these return statements are for something later
     ////// If not, why are they necessary?
