@@ -284,28 +284,34 @@ const activityValidator = () => {
   let getSpan = document.getElementById("activityError")
   //console.log(getSpan)
 
-  // loop through the checkbox inputs and see if one's checked
-  for (let i = 0; i < activityLabels.length; i++) {
-    if (activityLabels[i].checked == true) {
-      console.log(activityLabels[i]) // does this only get the first one?
-      console.log("pass")
-      // if getSpan exists, remove it
-      if (getSpan) {
-        activity.removeChild(errorActivity)
-      }
-      return true
-    } else {
-      console.log("fail")
-      // add error message (above the first label element)
-      activity.insertBefore(errorActivity, activityInsert)
-      // if getSpan exists, then remove it
-      if (getSpan) {
-        activity.removeChild(errorActivity)
-      }
-      //activityLegend.firstElementChild.appendChild(errorActivity)
-      return false
+  let chk = document.querySelector("input:checked")
+  console.log("chk")
+  console.log(chk)
+
+  // if any of the checkboxes are checked, pass. If none are checked, fail
+  if (chk) {
+    console.log("pass")
+    console.log("activity")
+    console.log(activity)
+    console.log("errorActivity")
+    console.log(errorActivity)
+    // if getSpan already exists, remove it
+    if (getSpan) {
+      activity.removeChild(errorActivity)
     }
+    return true
+  } else {
+    console.log("fail")
+    // add error message (above the first label element)
+    activity.insertBefore(errorActivity, activityInsert)
+    // if getSpan exists, then remove it
+    if (getSpan) {
+      activity.removeChild(errorActivity)
+    }
+    //activityLegend.firstElementChild.appendChild(errorActivity)
+    return false
   }
+  //}
 
   // outside of loop append the message
   // if errorActivity doesn't exist in the document, add it
