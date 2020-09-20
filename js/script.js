@@ -270,7 +270,7 @@ const emailValidator = () => {
 // helper function to validate activities
 const activityValidator = () => {
   // at least one box must be checked
-  const activityLabels = document.querySelectorAll(".activities label input")
+  // const activityLabels = document.querySelectorAll(".activities label input")
   const activityInsert = document.querySelector(".activities label")
   // console.log(activityInsert) // label element
   // console.log(activityLabels[0]) // input name="all"
@@ -281,28 +281,42 @@ const activityValidator = () => {
   errorActivity.innerHTML = "Please select at least one activity."
   // console.log(errorActivity)
   errorActivity.setAttribute("id", "activityError")
+  // this will get the element if it exists
   let getSpan = document.getElementById("activityError")
   //console.log(getSpan)
 
-  let chk = document.querySelector("input:checked")
-  console.log("chk")
-  console.log(chk)
+  let check = null
+  check = document.querySelector("input:checked")
+  console.log("check")
+  console.log(check) // checked input element
 
   // if any of the checkboxes are checked, pass. If none are checked, fail
-  if (chk) {
+  if (check) {
     console.log("pass")
     console.log("activity")
     console.log(activity)
     console.log("errorActivity")
     console.log(errorActivity)
     // if getSpan already exists, remove it
+    // if getSpan doesn't exist, this if will be ignored
+    ////// is this throwing an error? activity is the fieldset and errorActivity is the span
     if (getSpan) {
-      activity.removeChild(errorActivity)
+      ////// needed to setup a new getElementById
+      ////// activity.removeChild(errorActivity) wasn't working
+      ////// Not sure why it doesn't work, it's the second child of the fieldset element(activity))
+
+      let span = document.getElementById("activityError")
+      span.style.display = "none"
+      // activity.removeChild(errorActivity)
+    } else {
+      span.style.display = "block"
     }
+    ////// I'm guessing these return statements are for something later
+    ////// If not, why are they necessary?
     return true
   } else {
     console.log("fail")
-    // add error message (above the first label element)
+    // add an error message above the first label element
     activity.insertBefore(errorActivity, activityInsert)
     // if getSpan exists, then remove it
     if (getSpan) {
