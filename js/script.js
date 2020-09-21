@@ -11,8 +11,6 @@ name.focus()
 
 const email = document.getElementById("mail")
 const activity = document.querySelector(".activities") // fieldset element
-const activityLabelInputs = document.querySelectorAll(".activities label input")
-//const form = document.querySelector("form")
 
 // * This is the only part of the project where index.html needs to be changed.
 // initially hide the "other" input for job roles
@@ -138,10 +136,8 @@ activity.addEventListener("change", function (e) {
     if (dayAndTime === inputAttrubute && check !== activityCheckboxes[i]) {
       if (activityCheckboxes[i].disabled) {
         activityCheckboxes[i].disabled = false
-        //activityLabelInputs.style.color = ""
       } else {
         activityCheckboxes[i].disabled = true
-        // console.log(activityLabelInputs[i]) // How to target the text in these inputs
       }
     }
   }
@@ -190,7 +186,9 @@ payment.addEventListener("change", function (e) {
 // name, email, and activities are always required
 // Payment has 3 inputs and only needs validation if credit card is selected
 //
+// *******************************
 // HELPER FUNCTIONS
+//
 // helper function and error message to validate "name"
 const nameValidator = () => {
   //console.log(name.value.length)
@@ -264,6 +262,7 @@ const emailValidator = () => {
 }
 
 // helper function to validate activities
+// Code reference thanks to "sradms0" on Slack
 const activityValidator = () => {
   // at least one checkbox must be checked
   // existingErrorSpan to "get by ID" if the element already exists
@@ -278,7 +277,7 @@ const activityValidator = () => {
     }
     return true
   } else {
-    // if existingErrorSpan does NOT exist, create it and add it to the DOM
+    // if there are no boxes checked and existingErrorSpan does NOT exist, create it and add it to the DOM
     if (!existingErrorSpan) {
       const activityInsert = document.querySelector(".activities label")
       let errorActivity = document.createElement("span")
@@ -291,12 +290,78 @@ const activityValidator = () => {
     return false
   }
 }
+//○ Credit Card Number (only validated if the payment method is “credit card”)
+//○ Zip Code (only validated if the payment method is “credit card”)
+//○ CVV (only validated if the payment method is “credit card”)
+//○ Use a conditional to check if the input value meets the requirements for that input as stated in the project instructions.
+//○ If the criteria are not met, add an error indicator and return false.
+//○ If the criteria are met, remove any error indicators and return true.
+
+// With the individual validation functions complete, a single master validation function can
+// now be created to test them all with a single function call. If all the individual validation
+// functions return true, then the master validation function should return true as well.
+// And if any individual validation functions return false, then the master function should
+// do the same.
+
+// NOTE: Remember, the name, email, and activity section need to be validated on
+// every submission attempt regardless of which payment method has been
+// selected. But the three credit card fields will only need to be validated if “credit
+// card” is the selected payment method.
+
+// ● Now that you have the individual validation functions and a function to orchestrate the
+// whole validation process, we need a way to kick things off. For example, a submit event
+// listener on the form element could prevent the default submission behavior of the form if
+// any of the fields are invalid, or false.
 
 // helper function to validate credit card
-const creditCardValidator = () => {}
+// Code reference thanks to "sradms0" on Slack (if element doesn't exist, create it. If it already esists, remove it)
+const creditCardValidator = () => {
+  // DELETE - don't need this:
+  // const creditSelect = document.querySelector("#payment option[value='credit card']")
+  // if (creditSelect.selected === true) {
+  //   console.log("credit card selected")
+  // }
+  // moving on ...
 
+  //Select the credit card number input field
+  const ccNumber = document.querySelector("#cc-num")
+  const paymentLabel = document.querySelector("label[for='payment']")
+  // get existing error span by ID
+  const existingErrorSpan = document.getElementById("cardError") //null if it doesn't exist in DOM yet
+  console.log("existingErrorSpan ... ")
+  console.log(existingErrorSpan) // null at first
+  ccNumber.addEventListener("blur", () => {
+    console.log("Please enter a valid credit card number")
+    console.log(ccNumber.value.length)
+    // if there's an existingErrorSpan (Id="cardError") then remove it
+    if (existingErrorSpan) {
+      paymentLabel.removeChild(existingErrorSpan)
+    }
+    // if the field is empty and the number isn't valid
+    // else if no error is in the DOM, create and append an error message
+    if (ccNumber.value.length >= 2) {
+      return true
+    } else {
+      if (!existingErrorSpan) {
+        const cardErrorSpan = document.createElement("span")
+        cardErrorSpan.innerHTML = " Please enter a valid credit card number."
+        cardErrorSpan.setAttribute("id", "cardError")
+        cardErrorSpan.style.color = "red"
+
+        paymentLabel.appendChild(cardErrorSpan)
+      }
+      return false
+    }
+  })
+}
 //
-// eventlisteners
+//
+//
+// eventlisteners for triggering helper functions
 name.addEventListener("blur", nameValidator)
 email.addEventListener("blur", emailValidator)
 activity.addEventListener("mouseout", activityValidator)
+// payment.addEventListener("change", creditCardValidator)
+// does creditCardValidator() automatically need to be called?
+// Seems so, or it won't work if user inputs default credit card info
+creditCardValidator()
