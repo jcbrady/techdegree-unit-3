@@ -245,10 +245,6 @@ const emailValidator = () => {
   const dot = emailValue.lastIndexOf(".")
   //console.log(dot)
 
-  // if (true) {
-  //   console.log("The @ and . validity check in email")
-  // }
-
   // Check 1: error message if email is empty
   if (email.value.length !== 0 && atSymbol > 1 && dot > atSymbol + 1) {
     // error message removed if there was a previous error
@@ -269,79 +265,36 @@ const emailValidator = () => {
 
 // helper function to validate activities
 const activityValidator = () => {
-  // at least one box must be checked
-  const activityInsert = document.querySelector(".activities label")
-
-  let errorActivity = document.createElement("span")
-  errorActivity.style.color = "red"
-  errorActivity.innerHTML = "Please select at least one activity."
-  // console.log(errorActivity)
-  errorActivity.setAttribute("id", "activityError")
-  // this will get the element if it exists
+  // at least one checkbox must be checked
+  // existingErrorSpan to "get by ID" if the element already exists
   let existingErrorSpan = document.getElementById("activityError")
-  //console.log(existingErrorSpan)
-
-  let check = null
-  check = document.querySelector("input:checked")
-  // console.log("check")
-  // console.log(check) // checked input element
-
+  // check if any checkboxes have been checked
+  let check = document.querySelector("input:checked")
   // if any of the checkboxes are checked, pass. If none are checked, fail
   if (check) {
-    console.log("pass")
-    console.log("activity")
-    console.log(activity)
-    console.log("errorActivity")
-    console.log(errorActivity)
-    // if existingErrorSpan already exists, remove it
-    // if existingErrorSpan doesn't exist, this if will be ignored
-    ////// is this throwing an error? activity is the fieldset and errorActivity is the span
+    // if the error element already exists in the document, remove it
     if (existingErrorSpan) {
-      ////// needed to setup a new getElementById
-      ////// activity.removeChild(errorActivity) wasn't working
-      ////// Not sure why it doesn't work, it's the second child of the fieldset element(activity))
-
-      // let span = document.getElementById("activityError")
-      // span.style.display = "none"
       activity.removeChild(existingErrorSpan)
     }
-    ////// I'm guessing these return statements are for something later
-    ////// If not, why are they necessary?
     return true
   } else {
-    console.log("fail")
-    // add an error message above the first label element
-    activity.insertBefore(errorActivity, activityInsert)
-    // if existingErrorSpan exists, then remove it
-    if (existingErrorSpan) {
-      activity.removeChild(errorActivity)
+    // if existingErrorSpan does NOT exist, create it and add it to the DOM
+    if (!existingErrorSpan) {
+      const activityInsert = document.querySelector(".activities label")
+      let errorActivity = document.createElement("span")
+      errorActivity.style.color = "red"
+      errorActivity.innerHTML = "Please select at least one activity."
+      errorActivity.setAttribute("id", "activityError")
+
+      activity.insertBefore(errorActivity, activityInsert)
     }
-    //activityLegend.firstElementChild.appendChild(errorActivity)
     return false
   }
-  //}
-
-  // outside of loop append the message
-  // if errorActivity doesn't exist in the document, add it
 }
-
-// for (let i = 0; i < activityLabels.length; i++) {
-//   console.log(activityLabels[i]) //.hasAttribute("checked"))
-
-//   if (activityLabels[i].checked === true) {
-//     console.log("at least one activity has been checked.")
-//     return true
-//   } else {
-//     console.log("no activities were checked, please select at least one activity")
-//     return false
-//   }
-// }
 
 // helper function to validate credit card
 const creditCardValidator = () => {}
 
-//
-//
 //
 // eventlisteners
 name.addEventListener("blur", nameValidator)
