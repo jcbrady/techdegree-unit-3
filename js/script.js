@@ -316,32 +316,28 @@ const activityValidator = () => {
 // helper function to validate credit card
 // Code reference thanks to "sradms0" on Slack (if element doesn't exist, create it. If it already esists, remove it)
 const creditCardValidator = () => {
-  // DELETE - don't need this:
-  // const creditSelect = document.querySelector("#payment option[value='credit card']")
-  // if (creditSelect.selected === true) {
-  //   console.log("credit card selected")
-  // }
-  // moving on ...
-
-  //Select the credit card number input field
+  //Select the credit card number input field and paymentLabel as reference for inserting error messages
   const ccNumber = document.querySelector("#cc-num")
   const paymentLabel = document.querySelector("label[for='payment']")
-  // get existing error span by ID
-  const existingErrorSpan = document.getElementById("cardError") //null if it doesn't exist in DOM yet
-  console.log("existingErrorSpan ... ")
-  console.log(existingErrorSpan) // null at first
+
+  //null if it doesn't exist in DOM yet
+  //console.log("existingErrorSpan ... ")
+  //console.log(existingErrorSpan) // null at first
+  // fires if credit card number text input without the correct data
   ccNumber.addEventListener("blur", () => {
-    console.log("Please enter a valid credit card number")
-    console.log(ccNumber.value.length)
-    // if there's an existingErrorSpan (Id="cardError") then remove it
-    if (existingErrorSpan) {
-      paymentLabel.removeChild(existingErrorSpan)
-    }
+    // get existing error span by ID (this variable must be defined in the eventListener)
+    const existingErrorSpan = document.getElementById("cardError")
+    // console.log(paymentLabel)
+    // console.log(existingErrorSpan)
     // if the field is empty and the number isn't valid
-    // else if no error is in the DOM, create and append an error message
     if (ccNumber.value.length >= 2) {
+      if (existingErrorSpan) {
+        // if there's an existingErrorSpan (Id="cardError") then remove it
+        paymentLabel.removeChild(existingErrorSpan)
+      }
       return true
     } else {
+      // else if no error is in the DOM, create and append an error message
       if (!existingErrorSpan) {
         const cardErrorSpan = document.createElement("span")
         cardErrorSpan.innerHTML = " Please enter a valid credit card number."
