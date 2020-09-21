@@ -196,17 +196,17 @@ const nameValidator = () => {
   //console.log(name.value.length)
   // get the label element (to append span) and create span element for an error message
   // set an id attribute so it can be selected (if present)
-  // If present getSpan selects the id so it can be referenced in the if/else statement
+  // If present existingErrorSpan selects the id so it can be referenced in the if/else statement
   const nameLabel = document.getElementsByTagName("label")[0]
   let errorName = document.createElement("span")
   errorName.setAttribute("id", "nameError")
-  let getSpan = document.getElementById("nameError")
+  let existingErrorSpan = document.getElementById("nameError")
 
   // error message if name is empty
   if (name.value.length !== 0) {
     // error message removed if there was a previous error
-    if (getSpan) {
-      nameLabel.removeChild(getSpan)
+    if (existingErrorSpan) {
+      nameLabel.removeChild(existingErrorSpan)
     }
     //console.log("check passes, there are more than 0 characters!")
     //console.log(errorName)
@@ -216,7 +216,7 @@ const nameValidator = () => {
     name.style.border = "1px"
     return true
     // using else/if instead of just else, fixes multiple error messages stacking up
-  } else if (!getSpan) {
+  } else if (!existingErrorSpan) {
     errorName.style.color = "red"
     errorName.innerHTML = " The name field is required."
     nameLabel.appendChild(errorName)
@@ -229,14 +229,14 @@ const nameValidator = () => {
 const emailValidator = () => {
   // get the label element (to append span) and create span element for an error message
   // set an id attribute so it can be selected (if present)
-  // If present, getSpan selects the id so it can be referenced in the if/else statement
+  // If present, existingErrorSpan selects the id so it can be referenced in the if/else statement
   const emailLabel = document.getElementsByTagName("label")[1]
   //console.log(emailLabel)
   let errorEmail = document.createElement("span")
   //console.log(errorEmail)
   errorEmail.setAttribute("id", "emailError")
-  let getSpan = document.getElementById("emailError")
-  //console.log(getSpan) // null at first because it isn't in the document
+  let existingErrorSpan = document.getElementById("emailError")
+  //console.log(existingErrorSpan) // null at first because it isn't in the document
   // for regex
   const emailValue = email.value
   //console.log(emailValue)
@@ -252,13 +252,13 @@ const emailValidator = () => {
   // Check 1: error message if email is empty
   if (email.value.length !== 0 && atSymbol > 1 && dot > atSymbol + 1) {
     // error message removed if there was a previous error
-    if (getSpan) {
-      emailLabel.removeChild(getSpan)
+    if (existingErrorSpan) {
+      emailLabel.removeChild(existingErrorSpan)
     }
     email.style.border = "1px"
     return true
     // else/if fixes multiple error messages stacking up
-  } else if (!getSpan) {
+  } else if (!existingErrorSpan) {
     errorEmail.style.color = "red"
     errorEmail.innerHTML = " Please enter a valid email."
     emailLabel.appendChild(errorEmail)
@@ -270,25 +270,21 @@ const emailValidator = () => {
 // helper function to validate activities
 const activityValidator = () => {
   // at least one box must be checked
-  // const activityLabels = document.querySelectorAll(".activities label input")
   const activityInsert = document.querySelector(".activities label")
-  // console.log(activityInsert) // label element
-  // console.log(activityLabels[0]) // input name="all"
-  // console.log(activityLabels[1]) // input name="js-frameworks"
-  // console.log(activityLabels[2]) // input name="js-libs"
+
   let errorActivity = document.createElement("span")
   errorActivity.style.color = "red"
   errorActivity.innerHTML = "Please select at least one activity."
   // console.log(errorActivity)
   errorActivity.setAttribute("id", "activityError")
   // this will get the element if it exists
-  let getSpan = document.getElementById("activityError")
-  //console.log(getSpan)
+  let existingErrorSpan = document.getElementById("activityError")
+  //console.log(existingErrorSpan)
 
   let check = null
   check = document.querySelector("input:checked")
-  console.log("check")
-  console.log(check) // checked input element
+  // console.log("check")
+  // console.log(check) // checked input element
 
   // if any of the checkboxes are checked, pass. If none are checked, fail
   if (check) {
@@ -297,21 +293,17 @@ const activityValidator = () => {
     console.log(activity)
     console.log("errorActivity")
     console.log(errorActivity)
-    // if getSpan already exists, remove it
-    // if getSpan doesn't exist, this if will be ignored
+    // if existingErrorSpan already exists, remove it
+    // if existingErrorSpan doesn't exist, this if will be ignored
     ////// is this throwing an error? activity is the fieldset and errorActivity is the span
-    if (getSpan) {
+    if (existingErrorSpan) {
       ////// needed to setup a new getElementById
       ////// activity.removeChild(errorActivity) wasn't working
       ////// Not sure why it doesn't work, it's the second child of the fieldset element(activity))
 
-      let span = document.getElementById("activityError")
-      span.style.display = "none"
-      // activity.removeChild(errorActivity)
-    } else {
-      span.style.display = "block"
-      console.log("check in else:")
-      console.log(check)
+      // let span = document.getElementById("activityError")
+      // span.style.display = "none"
+      activity.removeChild(existingErrorSpan)
     }
     ////// I'm guessing these return statements are for something later
     ////// If not, why are they necessary?
@@ -320,8 +312,8 @@ const activityValidator = () => {
     console.log("fail")
     // add an error message above the first label element
     activity.insertBefore(errorActivity, activityInsert)
-    // if getSpan exists, then remove it
-    if (getSpan) {
+    // if existingErrorSpan exists, then remove it
+    if (existingErrorSpan) {
       activity.removeChild(errorActivity)
     }
     //activityLegend.firstElementChild.appendChild(errorActivity)
