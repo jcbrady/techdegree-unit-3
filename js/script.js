@@ -183,6 +183,12 @@ payment.addEventListener("change", function (e) {
 // FORM VALIDATION AND VALIDATION MESSAGES
 // *******************************
 
+// Regex Variables
+// nameRegex inspired by:
+// https://stackoverflow.com/questions/35392798/regex-to-validate-full-name-having-atleast-four-characters
+
+const nameRegex = /^[a-zA-Z]{4,}(?: [a-zA-Z]+){0,2}$/gm.test(name.value)
+
 // name, email, and activities are always required
 // Payment has 3 inputs and only needs validation if credit card is selected
 //
@@ -191,7 +197,8 @@ payment.addEventListener("change", function (e) {
 //
 // helper function and error message to validate "name"
 const nameValidator = () => {
-  //console.log(name.value.length)
+  console.log(name.value)
+  console.log(nameRegex)
   // get the label element (to append span) and create span element for an error message
   // set an id attribute so it can be selected (if present)
   // If present existingErrorSpan selects the id so it can be referenced in the if/else statement
@@ -206,21 +213,32 @@ const nameValidator = () => {
     if (existingErrorSpan) {
       nameLabel.removeChild(existingErrorSpan)
     }
-    //console.log("check passes, there are more than 0 characters!")
-    //console.log(errorName)
-    //console.log(name.parentNode)
-    //console.log(nameLabel)
-    //name.style.border = "2px solid white"
-    name.style.border = "1px"
+    name.style.border = "2px solid rgb(111, 157, 220)"
     return true
     // using else/if instead of just else, fixes multiple error messages stacking up
   } else if (!existingErrorSpan) {
     errorName.style.color = "red"
-    errorName.innerHTML = " The name field is required."
+    errorName.innerHTML = " The name field can't be empty."
     nameLabel.appendChild(errorName)
     name.style.border = "2px solid red"
     return false
   }
+  // test regex in a separate if statement
+  // if (nameRegex) {
+  //   // error message removed if there was a previous error
+  //   if (existingErrorSpan) {
+  //     nameLabel.removeChild(existingErrorSpan)
+  //   }
+  //   name.style.border = "2px solid rgb(111, 157, 220)"
+  //   return true
+  //   // using else/if instead of just else, fixes multiple error messages stacking up
+  // } else if (!existingErrorSpan) {
+  //   errorName.style.color = "red"
+  //   errorName.innerHTML = " Please enter your name for your conference name tag."
+  //   nameLabel.appendChild(errorName)
+  //   name.style.border = "2px solid red"
+  //   return false
+  // }
 }
 
 // helper function to validate email
@@ -249,7 +267,7 @@ const emailValidator = () => {
     if (existingErrorSpan) {
       emailLabel.removeChild(existingErrorSpan)
     }
-    email.style.border = "1px"
+    email.style.border = "2px solid rgb(111, 157, 220)"
     return true
     // else/if fixes multiple error messages stacking up
   } else if (!existingErrorSpan) {
@@ -294,6 +312,10 @@ const activityValidator = () => {
 //○ Zip Code (only validated if the payment method is “credit card”)
 //○ CVV (only validated if the payment method is “credit card”)
 //○ Use a conditional to check if the input value meets the requirements for that input as stated in the project instructions.
+//
+//If "Credit Card" is the selected payment option, the three credit card fields accept only numbers:
+// a 13 to 16-digit credit card number, a 5-digit zip code, and 3-number CVV value.
+//
 //○ If the criteria are not met, add an error indicator and return false.
 //○ If the criteria are met, remove any error indicators and return true.
 
@@ -336,7 +358,7 @@ const creditCardValidator = () => {
       if (existingErrorSpan) {
         // if there's an existingErrorSpan (Id="cardError") then remove it
         paymentLabel.removeChild(existingErrorSpan)
-
+        ccNumber.style.border = "2px solid rgb(111, 157, 220)"
         return true
       }
     } else {
@@ -346,7 +368,7 @@ const creditCardValidator = () => {
         cardErrorSpan.innerHTML = " Please enter a valid credit card number."
         cardErrorSpan.setAttribute("id", "cardError")
         cardErrorSpan.style.color = "red"
-
+        ccNumber.style.border = "2px solid red"
         paymentLabel.appendChild(cardErrorSpan)
         return false
       }
@@ -361,7 +383,7 @@ const creditCardValidator = () => {
       if (existingErrorSpanZip) {
         // if there's an existingErrorSpan (Id="zipError") then remove it
         paymentLabel.removeChild(existingErrorSpanZip)
-
+        zip.style.border = "2px solid rgb(111, 157, 220)"
         return true
       }
     } else {
@@ -371,7 +393,7 @@ const creditCardValidator = () => {
         zipErrorSpan.innerHTML = " Please enter a valid zip code."
         zipErrorSpan.setAttribute("id", "zipError")
         zipErrorSpan.style.color = "red"
-
+        zip.style.border = "2px solid red"
         paymentLabel.appendChild(zipErrorSpan)
         return false
       }
@@ -386,7 +408,7 @@ const creditCardValidator = () => {
       if (existingErrorSpanCvv) {
         // if there's an existingErrorSpan (Id="cvvError") then remove it
         paymentLabel.removeChild(existingErrorSpanCvv)
-
+        cvv.style.border = "2px solid rgb(111, 157, 220)"
         return true
       }
     } else {
@@ -396,7 +418,7 @@ const creditCardValidator = () => {
         cvvErrorSpan.innerHTML = " Please enter a valid CVV."
         cvvErrorSpan.setAttribute("id", "cvvError")
         cvvErrorSpan.style.color = "red"
-
+        cvv.style.border = "2px solid red"
         paymentLabel.appendChild(cvvErrorSpan)
         return false
       }
