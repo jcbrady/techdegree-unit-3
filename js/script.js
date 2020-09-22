@@ -1,8 +1,15 @@
-//* Should I declare all globals at the top of the file?
+//* Do I want to declare all globals at the top of the file?
 
 // *******************************
 // PAGE SETUP - If user has Javascript
 // *******************************
+
+// variables for form submission
+const form = document.getElementsByTagName("form")[0]
+console.log(form)
+// put submit event on form, not on the button
+// const submitButton = document.getElementsByTagName("button")[0]
+// console.log(submitButton)
 
 // Use javascript instead of autofocus in html to select the first form field on page load.
 let name = document.getElementById("name")
@@ -346,19 +353,25 @@ const activityValidator = () => {
 
 // helper function to validate credit card
 // Code reference thanks to "sradms0" on Slack (if element doesn't exist, create it. If it already esists, remove it)
+// I put these variables outside of the creditCardValidator function
+// so I could reference them in eventListeners when page first loads
 const ccNumber = document.querySelector("#cc-num")
+const zip = document.querySelector("#zip")
+const cvv = document.querySelector("#cvv")
 
 const creditCardValidator = () => {
   //Select the credit card number input field and paymentLabel as reference for inserting error messages
 
   const paymentLabel = document.querySelector("label[for='payment']")
-  const zip = document.querySelector("#zip")
-  const cvv = document.querySelector("#cvv")
 
   // regular expression regex for credit card number, zip, and CVV
-  const ccNumberRegex = /[^0-9]+/.test(ccNumber.value)
-  console.log(ccNumber.value)
-  console.log(ccNumberRegex)
+  const ccNumberRegex = /^[0-9]{13,16}$/.test(ccNumber.value)
+  const zipRegex = /^[0-9]{5,}$/.test(zip.value)
+  const cvvRegex = /^[0-9]{3,}$/.test(cvv.value)
+  console.log(cvv.value)
+  console.log("should be 3 numbers in cvv field")
+  console.log(cvvRegex)
+
   //const ccZipRegex = //
   //const ccCVVRegex = //
 
@@ -372,7 +385,7 @@ const creditCardValidator = () => {
     // console.log(paymentLabel)
     // console.log(existingErrorSpan)
     // if the field is empty and the number isn't valid
-    if (ccNumber.value.length === 2) {
+    if (ccNumber.value.length !== 0 && ccNumberRegex) {
       if (existingErrorSpan) {
         // if there's an existingErrorSpan (Id="cardError") then remove it
         paymentLabel.removeChild(existingErrorSpan)
@@ -383,7 +396,7 @@ const creditCardValidator = () => {
       // else if no error is in the DOM, create and append an error message
       if (!existingErrorSpan) {
         const cardErrorSpan = document.createElement("span")
-        cardErrorSpan.innerHTML = " Please enter a valid credit card number."
+        cardErrorSpan.innerHTML = " Please enter a valid credit card number (no spaces)."
         cardErrorSpan.setAttribute("id", "cardError")
         cardErrorSpan.style.color = "red"
         ccNumber.style.border = "2px solid red"
@@ -397,7 +410,7 @@ const creditCardValidator = () => {
     const existingErrorSpanZip = document.getElementById("zipError")
     console.log("zip")
     //
-    if (zip.value.length >= 2) {
+    if (zip.value.length !== 0 && zipRegex) {
       if (existingErrorSpanZip) {
         // if there's an existingErrorSpan (Id="zipError") then remove it
         paymentLabel.removeChild(existingErrorSpanZip)
@@ -422,7 +435,7 @@ const creditCardValidator = () => {
     const existingErrorSpanCvv = document.getElementById("cvvError")
     console.log("cvv")
     //
-    if (cvv.value.length >= 3) {
+    if (cvv.value.length !== 0 && cvvRegex) {
       if (existingErrorSpanCvv) {
         // if there's an existingErrorSpan (Id="cvvError") then remove it
         paymentLabel.removeChild(existingErrorSpanCvv)
@@ -450,15 +463,29 @@ const creditCardValidator = () => {
 name.addEventListener("blur", nameValidator)
 email.addEventListener("blur", emailValidator)
 activity.addEventListener("mouseout", activityValidator)
+ccNumber.addEventListener("keyup", creditCardValidator)
+//ccNumber.addEventListener("blur", creditCardValidator)
+zip.addEventListener("keyup", creditCardValidator)
+cvv.addEventListener("keyup", creditCardValidator)
 
-console.log(payment.children[1]) // credit card option
-payment.children[1].addEventListener("focus", creditCardValidator)
+//console.log(payment.children[1]) // credit card option
+//payment.children[1].addEventListener("focus", creditCardValidator)
+// ?
 //payment.children[1].addEventListener("selected", creditCardValidator)
 //payment.children[1].addEventListener("active", creditCardValidator)
 
 // does creditCardValidator() automatically need to be called?
-// Seems so, or it won't work if user inputs default credit card info
-creditCardValidator()
+// Seems like it does or it won't work if user inputs credit card info when it's default
+//creditCardValidator()
 
-const submitButton = document.getElementsByTagName("button")[0]
-console.log(submitButton)
+form.addEventListener("submit", e => {
+  if (nameValidator == false) {
+    e.preventDefault()
+    nameValidator()
+  }
+  e.preventDefault()
+  console.log("submitted")
+})
+
+console.log(nameValidator.value) // undefined
+console.log(nameValidator.returnValue) // undefined
