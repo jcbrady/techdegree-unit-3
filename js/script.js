@@ -319,6 +319,8 @@ const creditCardValidator = () => {
   //Select the credit card number input field and paymentLabel as reference for inserting error messages
   const ccNumber = document.querySelector("#cc-num")
   const paymentLabel = document.querySelector("label[for='payment']")
+  const zip = document.querySelector("#zip")
+  const cvv = document.querySelector("#cvv")
 
   //null if it doesn't exist in DOM yet
   //console.log("existingErrorSpan ... ")
@@ -334,8 +336,9 @@ const creditCardValidator = () => {
       if (existingErrorSpan) {
         // if there's an existingErrorSpan (Id="cardError") then remove it
         paymentLabel.removeChild(existingErrorSpan)
+
+        return true
       }
-      return true
     } else {
       // else if no error is in the DOM, create and append an error message
       if (!existingErrorSpan) {
@@ -345,11 +348,61 @@ const creditCardValidator = () => {
         cardErrorSpan.style.color = "red"
 
         paymentLabel.appendChild(cardErrorSpan)
+        return false
       }
-      return false
     }
   })
-}
+
+  zip.addEventListener("blur", () => {
+    const existingErrorSpanZip = document.getElementById("zipError")
+    console.log("zip")
+    //
+    if (zip.value.length >= 2) {
+      if (existingErrorSpanZip) {
+        // if there's an existingErrorSpan (Id="zipError") then remove it
+        paymentLabel.removeChild(existingErrorSpanZip)
+
+        return true
+      }
+    } else {
+      // else if no error is in the DOM, create and append an error message
+      if (!existingErrorSpanZip) {
+        const zipErrorSpan = document.createElement("span")
+        zipErrorSpan.innerHTML = " Please enter a valid zip code."
+        zipErrorSpan.setAttribute("id", "zipError")
+        zipErrorSpan.style.color = "red"
+
+        paymentLabel.appendChild(zipErrorSpan)
+        return false
+      }
+    }
+  })
+
+  cvv.addEventListener("blur", () => {
+    const existingErrorSpanCvv = document.getElementById("cvvError")
+    console.log("cvv")
+    //
+    if (cvv.value.length >= 3) {
+      if (existingErrorSpanCvv) {
+        // if there's an existingErrorSpan (Id="cvvError") then remove it
+        paymentLabel.removeChild(existingErrorSpanCvv)
+
+        return true
+      }
+    } else {
+      // else if no error is in the DOM, create and append an error message
+      if (!existingErrorSpanCvv) {
+        const cvvErrorSpan = document.createElement("span")
+        cvvErrorSpan.innerHTML = " Please enter a valid CVV."
+        cvvErrorSpan.setAttribute("id", "cvvError")
+        cvvErrorSpan.style.color = "red"
+
+        paymentLabel.appendChild(cvvErrorSpan)
+        return false
+      }
+    }
+  })
+} // end credit card validation helper function
 //
 //
 //
