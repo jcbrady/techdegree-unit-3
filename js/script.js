@@ -2,7 +2,6 @@
 
 // *******************************
 // PAGE SETUP - If user has Javascript
-// add an other field - COMPLETE THIS LATER
 // *******************************
 
 // Use javascript instead of autofocus in html to select the first form field on page load.
@@ -186,23 +185,26 @@ payment.addEventListener("change", function (e) {
 // Regex Variables
 // nameRegex inspired by:
 // https://stackoverflow.com/questions/35392798/regex-to-validate-full-name-having-atleast-four-characters
+// /^[a-zA-Z]{4,}(?: [a-zA-Z]+){0,2}$/
 
-const nameRegex = /^[a-zA-Z]{4,}(?: [a-zA-Z]+){0,2}$/gm.test(name.value)
-
-// name, email, and activities are always required
-// Payment has 3 inputs and only needs validation if credit card is selected
 //
 // *******************************
 // HELPER FUNCTIONS
 //
 // helper function and error message to validate "name"
 const nameValidator = () => {
+  // for some reason nameRegex isn't being recognized in the global scope
+  // putting it here seemed to fix that
+  const nameRegex = /^[a-zA-Z]{2,}(?: [a-zA-Z]+){0,2}$/gm.test(name.value)
   console.log(name.value)
   console.log(nameRegex)
   // get the label element (to append span) and create span element for an error message
   // set an id attribute so it can be selected (if present)
   // If present existingErrorSpan selects the id so it can be referenced in the if/else statement
   const nameLabel = document.getElementsByTagName("label")[0]
+  // const nameLabel2 = document.getElementsByTagName("fieldset")[0]
+  // console.log(nameLabel2)
+
   let errorName = document.createElement("span")
   errorName.setAttribute("id", "nameError")
   let existingErrorSpan = document.getElementById("nameError")
@@ -217,28 +219,33 @@ const nameValidator = () => {
     return true
     // using else/if instead of just else, fixes multiple error messages stacking up
   } else if (!existingErrorSpan) {
-    errorName.style.color = "red"
-    errorName.innerHTML = " The name field can't be empty."
-    nameLabel.appendChild(errorName)
-    name.style.border = "2px solid red"
+    nameErr("The name field can't be empty.")
     return false
   }
-  // test regex in a separate if statement
-  // if (nameRegex) {
-  //   // error message removed if there was a previous error
-  //   if (existingErrorSpan) {
-  //     nameLabel.removeChild(existingErrorSpan)
-  //   }
-  //   name.style.border = "2px solid rgb(111, 157, 220)"
-  //   return true
-  //   // using else/if instead of just else, fixes multiple error messages stacking up
-  // } else if (!existingErrorSpan) {
-  //   errorName.style.color = "red"
-  //   errorName.innerHTML = " Please enter your name for your conference name tag."
-  //   nameLabel.appendChild(errorName)
-  //   name.style.border = "2px solid red"
-  //   return false
-  // }
+
+  // This if statement doesn't run with the return statements above
+  // choosing to omit regex on the name validation (Charles the 1st)
+  // instead ... if name is longer than 26 characters (abcdefghijklmnopqrstuvwxyz) show an error
+  if (name.value.length > 26) {
+    // error message removed if there was a previous error
+    if (existingErrorSpan) {
+      nameLabel.removeChild(existingErrorSpan)
+    }
+    name.style.border = "2px solid rgb(111, 157, 220)"
+    nameErr(" To fit on your name badge, this field must be less than 26 characters.")
+    return true
+    // using else/if instead of just else, fixes multiple error messages stacking up
+  } else if (!existingErrorSpan) {
+    return false
+  }
+
+  // function for different error messages
+  function nameErr(errMsg = "error") {
+    errorName.style.color = "red"
+    errorName.innerHTML = errMsg
+    nameLabel.appendChild(errorName)
+    name.style.border = "2px solid red"
+  }
 }
 
 // helper function to validate email
@@ -308,6 +315,7 @@ const activityValidator = () => {
     return false
   }
 }
+// name, email, and activities are always required
 //○ Credit Card Number (only validated if the payment method is “credit card”)
 //○ Zip Code (only validated if the payment method is “credit card”)
 //○ CVV (only validated if the payment method is “credit card”)
