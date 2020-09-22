@@ -483,7 +483,7 @@ form.addEventListener("submit", e => {
     e.preventDefault()
     nameValidator()
   }
-  e.preventDefault()
+  // e.preventDefault()
   console.log("submitted")
 })
 
