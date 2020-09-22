@@ -195,9 +195,10 @@ payment.addEventListener("change", function (e) {
 const nameValidator = () => {
   // for some reason nameRegex isn't being recognized in the global scope
   // putting it here seemed to fix that
-  const nameRegex = /^[a-zA-Z]{2,}(?: [a-zA-Z]+){0,2}$/gm.test(name.value)
-  console.log(name.value)
-  console.log(nameRegex)
+  //const nameRegex = /^[a-zA-Z]{2,}(?: [a-zA-Z]+){0,2}$/gm.test(name.value)
+  //console.log(name.value)
+  //console.log(nameRegex)
+
   // get the label element (to append span) and create span element for an error message
   // set an id attribute so it can be selected (if present)
   // If present existingErrorSpan selects the id so it can be referenced in the if/else statement
@@ -345,12 +346,21 @@ const activityValidator = () => {
 
 // helper function to validate credit card
 // Code reference thanks to "sradms0" on Slack (if element doesn't exist, create it. If it already esists, remove it)
+const ccNumber = document.querySelector("#cc-num")
+
 const creditCardValidator = () => {
   //Select the credit card number input field and paymentLabel as reference for inserting error messages
-  const ccNumber = document.querySelector("#cc-num")
+
   const paymentLabel = document.querySelector("label[for='payment']")
   const zip = document.querySelector("#zip")
   const cvv = document.querySelector("#cvv")
+
+  // regular expression regex for credit card number, zip, and CVV
+  const ccNumberRegex = /[^0-9]+/.test(ccNumber.value)
+  console.log(ccNumber.value)
+  console.log(ccNumberRegex)
+  //const ccZipRegex = //
+  //const ccCVVRegex = //
 
   //null if it doesn't exist in DOM yet
   //console.log("existingErrorSpan ... ")
@@ -362,7 +372,7 @@ const creditCardValidator = () => {
     // console.log(paymentLabel)
     // console.log(existingErrorSpan)
     // if the field is empty and the number isn't valid
-    if (ccNumber.value.length >= 2) {
+    if (ccNumber.value.length === 2) {
       if (existingErrorSpan) {
         // if there's an existingErrorSpan (Id="cardError") then remove it
         paymentLabel.removeChild(existingErrorSpan)
@@ -440,7 +450,15 @@ const creditCardValidator = () => {
 name.addEventListener("blur", nameValidator)
 email.addEventListener("blur", emailValidator)
 activity.addEventListener("mouseout", activityValidator)
-// payment.addEventListener("change", creditCardValidator)
+
+console.log(payment.children[1]) // credit card option
+payment.children[1].addEventListener("focus", creditCardValidator)
+//payment.children[1].addEventListener("selected", creditCardValidator)
+//payment.children[1].addEventListener("active", creditCardValidator)
+
 // does creditCardValidator() automatically need to be called?
 // Seems so, or it won't work if user inputs default credit card info
 creditCardValidator()
+
+const submitButton = document.getElementsByTagName("button")[0]
+console.log(submitButton)
