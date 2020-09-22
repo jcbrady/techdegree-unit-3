@@ -6,7 +6,6 @@
 
 // variables for form submission
 const form = document.getElementsByTagName("form")[0]
-console.log(form)
 // put submit event on form, not on the button
 // const submitButton = document.getElementsByTagName("button")[0]
 // console.log(submitButton)
@@ -205,7 +204,7 @@ const nameValidator = () => {
   //const nameRegex = /^[a-zA-Z]{2,}(?: [a-zA-Z]+){0,2}$/gm.test(name.value)
   //console.log(name.value)
   //console.log(nameRegex)
-
+  console.log(1)
   // get the label element (to append span) and create span element for an error message
   // set an id attribute so it can be selected (if present)
   // If present existingErrorSpan selects the id so it can be referenced in the if/else statement
@@ -368,9 +367,9 @@ const creditCardValidator = () => {
   const ccNumberRegex = /^[0-9]{13,16}$/.test(ccNumber.value)
   const zipRegex = /^[0-9]{5,}$/.test(zip.value)
   const cvvRegex = /^[0-9]{3,}$/.test(cvv.value)
-  console.log(cvv.value)
-  console.log("should be 3 numbers in cvv field")
-  console.log(cvvRegex)
+  //console.log(cvv.value)
+  //console.log("should be 3 numbers in cvv field")
+  //console.log(cvvRegex)
 
   //const ccZipRegex = //
   //const ccCVVRegex = //
@@ -478,14 +477,32 @@ cvv.addEventListener("keyup", creditCardValidator)
 // Seems like it does or it won't work if user inputs credit card info when it's default
 //creditCardValidator()
 
+// if validation is false don't submit the form
 form.addEventListener("submit", e => {
-  if (nameValidator == false) {
+  if (!nameValidator()) {
     e.preventDefault()
-    nameValidator()
+    console.log("nameValidator")
   }
-  // e.preventDefault()
+
+  if (!emailValidator()) {
+    e.preventDefault()
+    console.log("emailValidator")
+  }
+
+  if (!activityValidator()) {
+    e.preventDefault()
+    console.log("activityValidator")
+  }
+  if (!creditCardValidator()) {
+    e.preventDefault()
+    console.log("creditCardValidator")
+  }
+
+  //e.preventDefault()
   console.log("submitted")
 })
 
-console.log(nameValidator.value) // undefined
-console.log(nameValidator.returnValue) // undefined
+//console.log(nameValidator().value) // undefined
+//console.log(nameValidator.returnValue) // undefined
+console.log(!nameValidator())
+//console.log(nameValidator())
