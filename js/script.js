@@ -204,7 +204,7 @@ const nameValidator = () => {
   //const nameRegex = /^[a-zA-Z]{2,}(?: [a-zA-Z]+){0,2}$/gm.test(name.value)
   //console.log(name.value)
   //console.log(nameRegex)
-  console.log(1)
+
   // get the label element (to append span) and create span element for an error message
   // set an id attribute so it can be selected (if present)
   // If present existingErrorSpan selects the id so it can be referenced in the if/else statement
@@ -477,7 +477,8 @@ cvv.addEventListener("keyup", creditCardValidator)
 // Seems like it does or it won't work if user inputs credit card info when it's default
 //creditCardValidator()
 
-// if validation is false don't submit the form
+// if validation is false and the error is there, don't submit the form
+// confused about what the not ! operator is doing here
 form.addEventListener("submit", e => {
   if (!nameValidator()) {
     e.preventDefault()
@@ -505,4 +506,4 @@ form.addEventListener("submit", e => {
 //console.log(nameValidator().value) // undefined
 //console.log(nameValidator.returnValue) // undefined
 console.log(!nameValidator())
-//console.log(nameValidator())
+//console.log(nameValidator()) // undefined
