@@ -479,4 +479,4 @@ form.addEventListener("submit", e => {
 //console.log(nameValidator().value) // undefined
 //console.log(nameValidator.returnValue) // undefined
 //console.log(nameValidator()) // undefined
-console.log(!nameValidator())
+//console.log(!nameValidator())
