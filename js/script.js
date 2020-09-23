@@ -31,10 +31,6 @@ jobTitle.addEventListener("change", function (e) {
   } else {
     otherJob.setAttribute("type", "hidden")
   }
-
-  // if (e.target === e.target.lastElementChild) {
-  //   otherJob.setAttribute("type", "text")
-  // }
 })
 
 // *******************************
@@ -188,36 +184,23 @@ payment.addEventListener("change", function (e) {
 // FORM VALIDATION AND VALIDATION MESSAGES
 // *******************************
 
-// Regex Variables
-// nameRegex inspired by:
-// https://stackoverflow.com/questions/35392798/regex-to-validate-full-name-having-atleast-four-characters
-// /^[a-zA-Z]{4,}(?: [a-zA-Z]+){0,2}$/
-
 //
 // *******************************
 // HELPER FUNCTIONS
 //
 // helper function and error message to validate "name"
 const nameValidator = () => {
-  // for some reason nameRegex isn't being recognized in the global scope
-  // putting it here seemed to fix that
-  //const nameRegex = /^[a-zA-Z]{2,}(?: [a-zA-Z]+){0,2}$/gm.test(name.value)
-  //console.log(name.value)
-  //console.log(nameRegex)
-
   // get the label element (to append span) and create span element for an error message
   // set an id attribute so it can be selected (if present)
   // If present existingErrorSpan selects the id so it can be referenced in the if/else statement
   const nameLabel = document.getElementsByTagName("label")[0]
-  // const nameLabel2 = document.getElementsByTagName("fieldset")[0]
-  // console.log(nameLabel2)
 
   let errorName = document.createElement("span")
   errorName.setAttribute("id", "nameError")
   let existingErrorSpan = document.getElementById("nameError")
 
   // error message if name is empty
-  if (name.value.length !== 0) {
+  if (name.value.length > 0) {
     // error message removed if there was a previous error
     if (existingErrorSpan) {
       nameLabel.removeChild(existingErrorSpan)
@@ -226,33 +209,23 @@ const nameValidator = () => {
     return true
     // using else/if instead of just else, fixes multiple error messages stacking up
   } else if (!existingErrorSpan) {
-    nameErr("The name field can't be empty.")
-    return false
-  }
-
-  // This if statement doesn't run with the return statements above
-  // choosing to omit regex on the name validation (Charles the 1st)
-  // instead ... if name is longer than 26 characters (abcdefghijklmnopqrstuvwxyz) show an error
-  if (name.value.length > 26) {
-    // error message removed if there was a previous error
-    if (existingErrorSpan) {
-      nameLabel.removeChild(existingErrorSpan)
-    }
-    name.style.border = "2px solid rgb(111, 157, 220)"
-    nameErr(" To fit on your name badge, this field must be less than 26 characters.")
-    return true
-    // using else/if instead of just else, fixes multiple error messages stacking up
-  } else if (!existingErrorSpan) {
+    //nameErr("The name field can't be empty.")
+    errorName.style.color = "red"
+    errorName.innerHTML = " Please enter your name as you want it to appear on your nametag."
+    nameLabel.appendChild(errorName)
+    name.style.border = "2px solid red"
     return false
   }
 
   // function for different error messages
-  function nameErr(errMsg = "error") {
-    errorName.style.color = "red"
-    errorName.innerHTML = errMsg
-    nameLabel.appendChild(errorName)
-    name.style.border = "2px solid red"
-  }
+  // I didn't implement this method because I ran into conflicts with if statements
+  //
+  // function nameErr(errMsg = "error") {
+  //   errorName.style.color = "red"
+  //   errorName.innerHTML = errMsg
+  //   nameLabel.appendChild(errorName)
+  //   name.style.border = "2px solid red"
+  // }
 }
 
 // helper function to validate email
@@ -328,7 +301,7 @@ const activityValidator = () => {
 //○ CVV (only validated if the payment method is “credit card”)
 //○ Use a conditional to check if the input value meets the requirements for that input as stated in the project instructions.
 //
-//If "Credit Card" is the selected payment option, the three credit card fields accept only numbers:
+// If "Credit Card" is the selected payment option, the three credit card fields accept only numbers:
 // a 13 to 16-digit credit card number, a 5-digit zip code, and 3-number CVV value.
 //
 //○ If the criteria are not met, add an error indicator and return false.
@@ -462,14 +435,14 @@ const creditCardValidator = () => {
 name.addEventListener("blur", nameValidator)
 email.addEventListener("blur", emailValidator)
 activity.addEventListener("mouseout", activityValidator)
-ccNumber.addEventListener("keyup", creditCardValidator)
 //ccNumber.addEventListener("blur", creditCardValidator)
+ccNumber.addEventListener("keyup", creditCardValidator)
 zip.addEventListener("keyup", creditCardValidator)
 cvv.addEventListener("keyup", creditCardValidator)
 
 //console.log(payment.children[1]) // credit card option
 //payment.children[1].addEventListener("focus", creditCardValidator)
-// ?
+//
 //payment.children[1].addEventListener("selected", creditCardValidator)
 //payment.children[1].addEventListener("active", creditCardValidator)
 
@@ -505,5 +478,5 @@ form.addEventListener("submit", e => {
 
 //console.log(nameValidator().value) // undefined
 //console.log(nameValidator.returnValue) // undefined
-console.log(!nameValidator())
 //console.log(nameValidator()) // undefined
+console.log(!nameValidator())
