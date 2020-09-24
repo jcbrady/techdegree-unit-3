@@ -333,7 +333,6 @@ const cvv = document.querySelector("#cvv")
 
 const creditCardValidator = () => {
   //Select the credit card number input field and paymentLabel as reference for inserting error messages
-
   const paymentLabel = document.querySelector("label[for='payment']")
 
   // regular expression regex for credit card number, zip, and CVV
@@ -343,9 +342,6 @@ const creditCardValidator = () => {
   //console.log(cvv.value)
   //console.log("should be 3 numbers in cvv field")
   //console.log(cvvRegex)
-
-  //const ccZipRegex = //
-  //const ccCVVRegex = //
 
   //null if it doesn't exist in DOM yet
   //console.log("existingErrorSpan ... ")
@@ -430,6 +426,9 @@ const creditCardValidator = () => {
 } // end credit card validation helper function
 //
 //
+// Special thanks to Elijah on Slack for help with this section
+//
+//
 //
 // eventlisteners for triggering helper functions
 name.addEventListener("blur", nameValidator)
@@ -455,21 +454,23 @@ cvv.addEventListener("keyup", creditCardValidator)
 form.addEventListener("submit", e => {
   if (!nameValidator()) {
     e.preventDefault()
-    console.log("nameValidator")
+    console.log(name.value + "name was empty, so nameValidator evaluated to false")
+  } else {
+    console.log(name.value + " is the name, nameValidator evaluated to true")
   }
 
   if (!emailValidator()) {
     e.preventDefault()
-    console.log("emailValidator")
+    console.log("emailValidator evaluated to false")
   }
 
   if (!activityValidator()) {
     e.preventDefault()
-    console.log("activityValidator")
+    console.log("activityValidator evaluated to false")
   }
   if (!creditCardValidator()) {
     e.preventDefault()
-    console.log("creditCardValidator")
+    console.log("creditCardValidator evaluated to false")
   }
 
   //e.preventDefault()
