@@ -484,7 +484,7 @@ form.addEventListener("submit", e => {
     e.preventDefault()
     console.log("activityValidator evaluated to false")
   }
-  if (!creditCardValidator() && !zipValidator() && !cvvValidator()) {
+  if (!ccNumberValidator() && !zipValidator() && !cvvValidator()) {
     e.preventDefault()
     console.log("creditCardValidator evaluated to false")
   }
