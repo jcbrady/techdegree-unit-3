@@ -1,5 +1,3 @@
-//* Do I want to declare all globals at the top of the file?
-
 // *******************************
 // PAGE SETUP - If user has Javascript
 // *******************************
