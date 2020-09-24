@@ -331,99 +331,115 @@ const ccNumber = document.querySelector("#cc-num")
 const zip = document.querySelector("#zip")
 const cvv = document.querySelector("#cvv")
 
-const creditCardValidator = () => {
+// Regular expression - "Regex" variables
+const ccNumberRegex = /^[0-9]{13,16}$/.test(ccNumber.value)
+const zipRegex = /^[0-9]{5,}$/.test(zip.value)
+const cvvRegex = /^[0-9]{3,}$/gm.test(cvv.value)
+console.log(cvvRegex) // false on page load
+
+const paymentLabel = document.querySelector("label[for='payment']")
+
+const ccNumberValidator = () => {
   //Select the credit card number input field and paymentLabel as reference for inserting error messages
-  const paymentLabel = document.querySelector("label[for='payment']")
 
-  // regular expression regex for credit card number, zip, and CVV
-  const ccNumberRegex = /^[0-9]{13,16}$/.test(ccNumber.value)
-  const zipRegex = /^[0-9]{5,}$/.test(zip.value)
-  const cvvRegex = /^[0-9]{3,}$/.test(cvv.value)
-  //console.log(cvv.value)
-  //console.log("should be 3 numbers in cvv field")
-  //console.log(cvvRegex)
-
-  //null if it doesn't exist in DOM yet
-  //console.log("existingErrorSpan ... ")
-  //console.log(existingErrorSpan) // null at first
   // fires if credit card number text input without the correct data
-  ccNumber.addEventListener("blur", () => {
-    // get existing error span by ID (this variable must be defined in the eventListener)
-    const existingErrorSpan = document.getElementById("cardError")
-    // console.log(paymentLabel)
-    // console.log(existingErrorSpan)
-    // if the field is empty and the number isn't valid
-    if (ccNumber.value.length !== 0 && ccNumberRegex) {
-      if (existingErrorSpan) {
-        // if there's an existingErrorSpan (Id="cardError") then remove it
-        paymentLabel.removeChild(existingErrorSpan)
-        ccNumber.style.border = "2px solid rgb(111, 157, 220)"
-        return true
-      }
-    } else {
-      // else if no error is in the DOM, create and append an error message
-      if (!existingErrorSpan) {
-        const cardErrorSpan = document.createElement("span")
-        cardErrorSpan.innerHTML = " Please enter a valid credit card number (no spaces)."
-        cardErrorSpan.setAttribute("id", "cardError")
-        cardErrorSpan.style.color = "red"
-        ccNumber.style.border = "2px solid red"
-        paymentLabel.appendChild(cardErrorSpan)
-        return false
-      }
-    }
-  })
+  // Removed the blur event listener:
+  //ccNumber.addEventListener("blur", () => {
 
-  zip.addEventListener("blur", () => {
-    const existingErrorSpanZip = document.getElementById("zipError")
-    console.log("zip")
-    //
-    if (zip.value.length !== 0 && zipRegex) {
-      if (existingErrorSpanZip) {
-        // if there's an existingErrorSpan (Id="zipError") then remove it
-        paymentLabel.removeChild(existingErrorSpanZip)
-        zip.style.border = "2px solid rgb(111, 157, 220)"
-        return true
-      }
-    } else {
-      // else if no error is in the DOM, create and append an error message
-      if (!existingErrorSpanZip) {
-        const zipErrorSpan = document.createElement("span")
-        zipErrorSpan.innerHTML = " Please enter a valid zip code."
-        zipErrorSpan.setAttribute("id", "zipError")
-        zipErrorSpan.style.color = "red"
-        zip.style.border = "2px solid red"
-        paymentLabel.appendChild(zipErrorSpan)
-        return false
-      }
+  // get existing error span by ID (this variable must be defined in the eventListener)
+  const existingErrorSpan = document.getElementById("cardError")
+  // console.log(paymentLabel)
+  // console.log(existingErrorSpan)
+  // if the field is empty and the number isn't valid
+  if (ccNumber.value.length !== 0 && ccNumberRegex) {
+    if (existingErrorSpan) {
+      // if there's an existingErrorSpan (Id="cardError") then remove it
+      paymentLabel.removeChild(existingErrorSpan)
+      ccNumber.style.border = "2px solid rgb(111, 157, 220)"
+      return true
     }
-  })
-
-  cvv.addEventListener("blur", () => {
-    const existingErrorSpanCvv = document.getElementById("cvvError")
-    console.log("cvv")
-    //
-    if (cvv.value.length !== 0 && cvvRegex) {
-      if (existingErrorSpanCvv) {
-        // if there's an existingErrorSpan (Id="cvvError") then remove it
-        paymentLabel.removeChild(existingErrorSpanCvv)
-        cvv.style.border = "2px solid rgb(111, 157, 220)"
-        return true
-      }
-    } else {
-      // else if no error is in the DOM, create and append an error message
-      if (!existingErrorSpanCvv) {
-        const cvvErrorSpan = document.createElement("span")
-        cvvErrorSpan.innerHTML = " Please enter a valid CVV."
-        cvvErrorSpan.setAttribute("id", "cvvError")
-        cvvErrorSpan.style.color = "red"
-        cvv.style.border = "2px solid red"
-        paymentLabel.appendChild(cvvErrorSpan)
-        return false
-      }
+  } else {
+    // else if no error is in the DOM, create and append an error message
+    if (!existingErrorSpan) {
+      const cardErrorSpan = document.createElement("span")
+      cardErrorSpan.innerHTML = " Please enter a valid credit card number (no spaces)."
+      cardErrorSpan.setAttribute("id", "cardError")
+      cardErrorSpan.style.color = "red"
+      ccNumber.style.border = "2px solid red"
+      paymentLabel.appendChild(cardErrorSpan)
+      return false
     }
-  })
+  }
+  // })
 } // end credit card validation helper function
+
+const zipValidator = () => {
+  const existingErrorSpanZip = document.getElementById("zipError")
+  //
+  if (zip.value.length !== 0 && zipRegex) {
+    if (existingErrorSpanZip) {
+      // if there's an existingErrorSpan (Id="zipError") then remove it
+      paymentLabel.removeChild(existingErrorSpanZip)
+      zip.style.border = "2px solid rgb(111, 157, 220)"
+      return true
+    }
+  } else {
+    // else if no error is in the DOM, create and append an error message
+    if (!existingErrorSpanZip) {
+      const zipErrorSpan = document.createElement("span")
+      zipErrorSpan.innerHTML = " Please enter a valid zip code."
+      zipErrorSpan.setAttribute("id", "zipError")
+      zipErrorSpan.style.color = "red"
+      zip.style.border = "2px solid red"
+      paymentLabel.appendChild(zipErrorSpan)
+      return false
+    }
+  }
+}
+
+const cvvValidator = () => {
+  const existingErrorSpanCvv = document.getElementById("cvvError")
+  console.log(existingErrorSpanCvv)
+  console.log(cvv.value)
+  console.log("cvv runs outside of if statement(s)")
+  //
+  //
+  //
+  console.log(cvvRegex) // this isn't evaluating as true
+  if (cvvRegex) {
+    console.log("yes, the cvvRegex is true - 3 numbers were entered")
+  }
+  //
+  //
+  //
+  if (cvv.value.length !== 0) {
+    if (existingErrorSpanCvv) {
+      // if there's an existingErrorSpan (Id="cvvError") then remove it
+      console.log("if statement runs so existingErrorSpan is true and should return a true value.")
+      paymentLabel.removeChild(existingErrorSpanCvv)
+      cvv.style.border = "2px solid rgb(111, 157, 220)"
+      return true
+    }
+    // if the cvv.value is not empty and there are 3 numbers in the CVV
+    // return "true"
+    console.log(cvv.value)
+    return true
+  } else {
+    // else if no error is in the DOM, create and append an error message
+    if (!existingErrorSpanCvv) {
+      const cvvErrorSpan = document.createElement("span")
+      cvvErrorSpan.innerHTML = " Please enter a valid CVV."
+      cvvErrorSpan.setAttribute("id", "cvvError")
+      cvvErrorSpan.style.color = "red"
+      cvv.style.border = "2px solid red"
+      paymentLabel.appendChild(cvvErrorSpan)
+      console.log(cvv.value)
+      console.log("the else runs and returns false")
+      return false
+    }
+  }
+}
+
 //
 //
 // Special thanks to Elijah on Slack for help with this section
@@ -435,9 +451,9 @@ name.addEventListener("blur", nameValidator)
 email.addEventListener("blur", emailValidator)
 activity.addEventListener("mouseout", activityValidator)
 //ccNumber.addEventListener("blur", creditCardValidator)
-ccNumber.addEventListener("keyup", creditCardValidator)
-zip.addEventListener("keyup", creditCardValidator)
-cvv.addEventListener("keyup", creditCardValidator)
+ccNumber.addEventListener("keyup", ccNumberValidator)
+zip.addEventListener("keyup", zipValidator)
+cvv.addEventListener("keyup", cvvValidator)
 
 //console.log(payment.children[1]) // credit card option
 //payment.children[1].addEventListener("focus", creditCardValidator)
@@ -468,7 +484,7 @@ form.addEventListener("submit", e => {
     e.preventDefault()
     console.log("activityValidator evaluated to false")
   }
-  if (!creditCardValidator()) {
+  if (!creditCardValidator() && !zipValidator() && !cvvValidator()) {
     e.preventDefault()
     console.log("creditCardValidator evaluated to false")
   }
