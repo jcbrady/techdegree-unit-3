@@ -214,16 +214,6 @@ const nameValidator = () => {
     name.style.border = "2px solid red"
     return false
   }
-
-  // function for different error messages
-  // I didn't implement this method because I ran into conflicts with if statements
-  //
-  // function nameErr(errMsg = "error") {
-  //   errorName.style.color = "red"
-  //   errorName.innerHTML = errMsg
-  //   nameLabel.appendChild(errorName)
-  //   name.style.border = "2px solid red"
-  // }
 }
 
 // helper function to validate email
@@ -293,40 +283,7 @@ const activityValidator = () => {
     return false
   }
 }
-// name, email, and activities are always required
-//○ Credit Card Number (only validated if the payment method is “credit card”)
-//○ Zip Code (only validated if the payment method is “credit card”)
-//○ CVV (only validated if the payment method is “credit card”)
-//○ Use a conditional to check if the input value meets the requirements for that input as stated in the project instructions.
-//
-// If "Credit Card" is the selected payment option, the three credit card fields accept only numbers:
-// a 13 to 16-digit credit card number, a 5-digit zip code, and 3-number CVV value.
-//
-//○ If the criteria are not met, add an error indicator and return false.
-//○ If the criteria are met, remove any error indicators and return true.
 
-// With the individual validation functions complete, a single master validation function can
-// now be created to test them all with a single function call. If all the individual validation
-// functions return true, then the master validation function should return true as well.
-// And if any individual validation functions return false, then the master function should
-// do the same.
-
-// NOTE: Remember, the name, email, and activity section need to be validated on
-// every submission attempt regardless of which payment method has been
-// selected. But the three credit card fields will only need to be validated if “credit
-// card” is the selected payment method.
-
-// ● Now that you have the individual validation functions and a function to orchestrate the
-// whole validation process, we need a way to kick things off. For example, a submit event
-// listener on the form element could prevent the default submission behavior of the form if
-// any of the fields are invalid, or false.
-
-/* HELPER FUNCTIONS FOR CREDIT CARD VALIDATION
-Code reference thanks to "sradms0" on Slack: 
-if element doesn't exist, create it. If it already esists, remove it
-All these helper functions follow a similar pattern, detailed comments are only 
-in the first ccNumberValidator
-*/
 // Global variables, outside the creditCard helper functions, so I could reference them in eventListeners on page load.
 const ccNumber = document.querySelector("#cc-num")
 const zip = document.querySelector("#zip")
@@ -339,16 +296,7 @@ const paymentLabel = document.querySelector("label[for='payment']")
 const ccNumberValidator = () => {
   // Regular expression for credit card number = 13-16 numbers.
   const ccNumberRegex = /^[0-9]{13,16}$/.test(ccNumber.value)
-  /* 
- Interesting technique:
- The existingErrorSpan variable must be defined in the eventListener or the error messages will stack up,
- because it's referencing an element created here in the if statement that is given the "cardError" id attribute. 
- If existingErrorSpanNum is outside the function, it would only get the first element, so it doesn't do what's needed. 
- 
- Check console log statements in CVV with key up event listener 
- first time it's null, 2nd and 3rd time it runs it gets the element
- 4th number it also says null?
- */
+
   const existingErrorSpanNum = document.getElementById("cardError")
 
   // if the field is empty and the Credit Card number isn't valid
@@ -470,8 +418,3 @@ form.addEventListener("submit", e => {
     console.log("creditCardValidator evaluated to false")
   }
 })
-
-//console.log(nameValidator().value) // undefined
-//console.log(nameValidator.returnValue) // undefined
-//console.log(nameValidator()) // undefined
-//console.log(!nameValidator())
