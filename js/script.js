@@ -321,46 +321,49 @@ const activityValidator = () => {
 // listener on the form element could prevent the default submission behavior of the form if
 // any of the fields are invalid, or false.
 
-// helper function to validate credit card
-// Code reference thanks to "sradms0" on Slack (if element doesn't exist, create it. If it already esists, remove it)
-// I put these variables outside of the creditCardValidator function
-// so I could reference them in eventListeners when page first loads
+/* HELPER FUNCTIONS FOR CREDIT CARD VALIDATION
+Code reference thanks to "sradms0" on Slack: 
+if element doesn't exist, create it. If it already esists, remove it
+All these helper functions follow a similar pattern, detailed comments are only 
+in the first ccNumberValidator
+*/
+// Global variables, outside the creditCard helper functions, so I could reference them in eventListeners on page load.
 const ccNumber = document.querySelector("#cc-num")
 const zip = document.querySelector("#zip")
 const cvv = document.querySelector("#cvv")
 
-// Regular expression - "Regex" variables
-const ccNumberRegex = /^[0-9]{13,16}$/.test(ccNumber.value)
-const zipRegex = /^[0-9]{5,}$/.test(zip.value)
-const cvvRegex = /^[0-9]{3,}$/gm.test(cvv.value)
-console.log(cvvRegex) // false on page load
-
+//paymentLabel is the element used for inserting error messages into the DOM.
 const paymentLabel = document.querySelector("label[for='payment']")
 
+// helper function to validate credit card number.
 const ccNumberValidator = () => {
-  //Select the credit card number input field and paymentLabel as reference for inserting error messages
+  // Regular expression for credit card number = 13-16 numbers.
+  const ccNumberRegex = /^[0-9]{13,16}$/.test(ccNumber.value)
+  /* 
+ Interesting technique:
+ The existingErrorSpan variable must be defined in the eventListener or the error messages will stack up,
+ because it's referencing an element created here in the if statement that is given the "cardError" id attribute. 
+ If existingErrorSpanNum is outside the function, it would only get the first element, so it doesn't do what's needed. 
+ 
+ Check console log statements in CVV with key up event listener 
+ first time it's null, 2nd and 3rd time it runs it gets the element
+ 4th number it also says null?
+ */
+  const existingErrorSpanNum = document.getElementById("cardError")
 
-  // fires if credit card number text input without the correct data
-  // Removed the blur event listener:
-  //ccNumber.addEventListener("blur", () => {
-
-  // get existing error span by ID (this variable must be defined in the eventListener)
-  const existingErrorSpan = document.getElementById("cardError")
-  // console.log(paymentLabel)
-  // console.log(existingErrorSpan)
-  // if the field is empty and the number isn't valid
+  // if the field is empty and the Credit Card number isn't valid
   if (ccNumber.value.length !== 0 && ccNumberRegex) {
-    if (existingErrorSpan) {
-      // if there's an existingErrorSpan (Id="cardError") then remove it
-      paymentLabel.removeChild(existingErrorSpan)
+    // if there's an existingErrorSpan in the DOM remove it
+    if (existingErrorSpanNum) {
+      paymentLabel.removeChild(existingErrorSpanNum)
       ccNumber.style.border = "2px solid rgb(111, 157, 220)"
       return true
     }
+    // otherwise, create and append an error message
   } else {
-    // else if no error is in the DOM, create and append an error message
-    if (!existingErrorSpan) {
+    if (!existingErrorSpanNum) {
       const cardErrorSpan = document.createElement("span")
-      cardErrorSpan.innerHTML = " Please enter a valid credit card number (no spaces)."
+      cardErrorSpan.innerHTML = " Please enter a valid credit card; 13-16 numbers (no spaces)."
       cardErrorSpan.setAttribute("id", "cardError")
       cardErrorSpan.style.color = "red"
       ccNumber.style.border = "2px solid red"
@@ -368,21 +371,23 @@ const ccNumberValidator = () => {
       return false
     }
   }
-  // })
-} // end credit card validation helper function
+} // end credit card number validation helper function
 
+// helper function to validate zip.
 const zipValidator = () => {
+  // Regular expression for credit card zip = 5 or more numbers
+  const zipRegex = /^[0-9]{5,}$/.test(zip.value)
   const existingErrorSpanZip = document.getElementById("zipError")
-  //
+
   if (zip.value.length !== 0 && zipRegex) {
+    // if there's an existingErrorSpanZip in the DOM, remove it
     if (existingErrorSpanZip) {
-      // if there's an existingErrorSpan (Id="zipError") then remove it
       paymentLabel.removeChild(existingErrorSpanZip)
       zip.style.border = "2px solid rgb(111, 157, 220)"
-      return true
     }
+    return true
+    // otherwise create and append an error message
   } else {
-    // else if no error is in the DOM, create and append an error message
     if (!existingErrorSpanZip) {
       const zipErrorSpan = document.createElement("span")
       zipErrorSpan.innerHTML = " Please enter a valid zip code."
@@ -393,30 +398,23 @@ const zipValidator = () => {
       return false
     }
   }
-}
+} // end credit card zip validation helper function
 
+// helper function to validate cvv.
 const cvvValidator = () => {
+  // Regular expression for credit card cvv = 3 numbers
+  const cvvRegex = /^[0-9]{3}$/.test(cvv.value)
   const existingErrorSpanCvv = document.getElementById("cvvError")
   console.log(existingErrorSpanCvv)
   console.log(cvv.value)
   console.log("cvv runs outside of if statement(s)")
-  //
-  //
-  //
-  console.log(cvvRegex) // this isn't evaluating as true
-  if (cvvRegex) {
-    console.log("yes, the cvvRegex is true - 3 numbers were entered")
-  }
-  //
-  //
-  //
-  if (cvv.value.length !== 0) {
+
+  if (cvv.value.length !== 0 && cvvRegex) {
+    // if there's an existingErrorSpan remove it.
     if (existingErrorSpanCvv) {
-      // if there's an existingErrorSpan (Id="cvvError") then remove it
       console.log("if statement runs so existingErrorSpan is true and should return a true value.")
       paymentLabel.removeChild(existingErrorSpanCvv)
       cvv.style.border = "2px solid rgb(111, 157, 220)"
-      return true
     }
     // if the cvv.value is not empty and there are 3 numbers in the CVV
     // return "true"
@@ -438,41 +436,26 @@ const cvvValidator = () => {
   }
 }
 
-//
-//
-// Special thanks to Elijah on Slack for help with this section
-//
-//
-//
+// Thanks to Elijah on Slack for help with this section and the Credit Card helper functions
+
 // eventlisteners for triggering helper functions
 name.addEventListener("blur", nameValidator)
 email.addEventListener("blur", emailValidator)
 activity.addEventListener("mouseout", activityValidator)
-//ccNumber.addEventListener("blur", creditCardValidator)
 ccNumber.addEventListener("keyup", ccNumberValidator)
 zip.addEventListener("keyup", zipValidator)
 cvv.addEventListener("keyup", cvvValidator)
 
-//console.log(payment.children[1]) // credit card option
-//payment.children[1].addEventListener("focus", creditCardValidator)
-//
-//payment.children[1].addEventListener("selected", creditCardValidator)
-//payment.children[1].addEventListener("active", creditCardValidator)
-
-// does creditCardValidator() automatically need to be called?
-// Seems like it does or it won't work if user inputs credit card info when it's default
-//creditCardValidator()
-
-// if validation is false and the error is there, don't submit the form
-// confused about what the not ! operator is doing here
+// if validation is false and the error messages are in the DOM, don't submit the form
 form.addEventListener("submit", e => {
-  if (!nameValidator()) {
+  // this is one way to write the if conditional
+  if (nameValidator() === false) {
     e.preventDefault()
     console.log(name.value + "name was empty, so nameValidator evaluated to false")
   } else {
     console.log(name.value + " is the name, nameValidator evaluated to true")
   }
-
+  // this is a more common way to write it
   if (!emailValidator()) {
     e.preventDefault()
     console.log("emailValidator evaluated to false")
@@ -486,9 +469,6 @@ form.addEventListener("submit", e => {
     e.preventDefault()
     console.log("creditCardValidator evaluated to false")
   }
-
-  //e.preventDefault()
-  console.log("submitted")
 })
 
 //console.log(nameValidator().value) // undefined
