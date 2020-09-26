@@ -413,11 +413,11 @@ form.addEventListener("submit", e => {
       e.preventDefault()
     }
     if (!cvvValidator()) {
-      e.preventDefault
+      e.preventDefault()
     }
   } else {
     //break
-    console.log("From the if statement in Credit Card?")
+    console.log("From the else statement in Credit Card?")
   }
 
   console.log("submitted.")
