@@ -338,8 +338,8 @@ const zipValidator = () => {
     if (existingErrorSpanZip) {
       paymentLabel.removeChild(existingErrorSpanZip)
       zip.style.border = "2px solid rgb(111, 157, 220)"
-      return true
     }
+    return true
 
     // otherwise create and append an error message
   } else {
@@ -350,8 +350,8 @@ const zipValidator = () => {
       zipErrorSpan.style.color = "red"
       zip.style.border = "2px solid red"
       paymentLabel.appendChild(zipErrorSpan)
-      return false
     }
+    return false
   }
 } // end credit card zip validation helper function
 
