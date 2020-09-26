@@ -149,9 +149,6 @@ activity.addEventListener("change", function (e) {
 // initially activate credit card payment option & hide other payment options
 const payment = document.getElementById("payment")
 const credit_card = document.getElementById("credit-card")
-// console.log(payment)
-// console.log(credit_card)
-// console.log(activity)
 const paypal = document.getElementById("paypal")
 const bitcoin = document.getElementById("bitcoin")
 payment.firstElementChild.style.display = "none"
@@ -198,7 +195,7 @@ const nameValidator = () => {
   let existingErrorSpan = document.getElementById("nameError")
 
   // error message if name is empty
-  if (name.value.length > 0) {
+  if (name.value.length > 0 && name.value.length < 26) {
     // error message removed if there was a previous error
     if (existingErrorSpan) {
       nameLabel.removeChild(existingErrorSpan)
@@ -207,9 +204,8 @@ const nameValidator = () => {
     return true
     // using else/if instead of just else, fixes multiple error messages stacking up
   } else if (!existingErrorSpan) {
-    //nameErr("The name field can't be empty.")
     errorName.style.color = "red"
-    errorName.innerHTML = " Please enter your name as you want it to appear on your nametag."
+    errorName.innerHTML = " Please enter your name (1-26 characters) for your festival name badge."
     nameLabel.appendChild(errorName)
     name.style.border = "2px solid red"
     return false
@@ -222,21 +218,15 @@ const emailValidator = () => {
   // set an id attribute so it can be selected (if present)
   // If present, existingErrorSpan selects the id so it can be referenced in the if/else statement
   const emailLabel = document.getElementsByTagName("label")[1]
-  //console.log(emailLabel)
   let errorEmail = document.createElement("span")
-  //console.log(errorEmail)
   errorEmail.setAttribute("id", "emailError")
   let existingErrorSpan = document.getElementById("emailError")
-  //console.log(existingErrorSpan) // null at first because it isn't in the document
   // for regex
   const emailValue = email.value
-  //console.log(emailValue)
   const atSymbol = emailValue.indexOf("@")
-  //console.log(atSymbol)
   const dot = emailValue.lastIndexOf(".")
-  //console.log(dot)
 
-  // Check 1: error message if email is empty
+  // Check 1: error message if email is empty and doesn't contain @ and . at a given index
   if (email.value.length !== 0 && atSymbol > 1 && dot > atSymbol + 1) {
     // error message removed if there was a previous error
     if (existingErrorSpan) {
@@ -247,7 +237,7 @@ const emailValidator = () => {
     // else/if fixes multiple error messages stacking up
   } else if (!existingErrorSpan) {
     errorEmail.style.color = "red"
-    errorEmail.innerHTML = " Please enter a valid email."
+    errorEmail.innerHTML = " Please enter a valid email address."
     emailLabel.appendChild(errorEmail)
     email.style.border = "2px solid red"
     return false
@@ -277,7 +267,6 @@ const activityValidator = () => {
       errorActivity.style.color = "red"
       errorActivity.innerHTML = "Please select at least one activity."
       errorActivity.setAttribute("id", "activityError")
-
       activity.insertBefore(errorActivity, activityInsert)
     }
     return false
@@ -296,7 +285,6 @@ const paymentLabel = document.querySelector("label[for='payment']")
 const ccNumberValidator = () => {
   // Regular expression for credit card number = 13-16 numbers.
   const ccNumberRegex = /^[0-9]{13,16}$/.test(ccNumber.value)
-
   const existingErrorSpanNum = document.getElementById("cardError")
 
   // if the field is empty and the Credit Card number isn't valid
@@ -324,7 +312,7 @@ const ccNumberValidator = () => {
 // helper function to validate zip.
 const zipValidator = () => {
   // Regular expression for credit card zip = 5 or more numbers
-  const zipRegex = /^[0-9]{5,}$/.test(zip.value)
+  const zipRegex = /^[0-9]{5}$/.test(zip.value)
   const existingErrorSpanZip = document.getElementById("zipError")
 
   if (zip.value.length !== 0 && zipRegex) {
@@ -353,20 +341,14 @@ const cvvValidator = () => {
   // Regular expression for credit card cvv = 3 numbers
   const cvvRegex = /^[0-9]{3}$/.test(cvv.value)
   const existingErrorSpanCvv = document.getElementById("cvvError")
-  console.log(existingErrorSpanCvv)
-  console.log(cvv.value)
-  console.log("cvv runs outside of if statement(s)")
-
+  // if the cvv.value is not empty and there are 3 numbers in the CVV
   if (cvv.value.length !== 0 && cvvRegex) {
     // if there's an existingErrorSpan remove it.
     if (existingErrorSpanCvv) {
-      console.log("if statement runs so existingErrorSpan is true and should return a true value.")
       paymentLabel.removeChild(existingErrorSpanCvv)
       cvv.style.border = "2px solid rgb(111, 157, 220)"
     }
-    // if the cvv.value is not empty and there are 3 numbers in the CVV
-    // return "true"
-    console.log(cvv.value)
+
     return true
   } else {
     // else if no error is in the DOM, create and append an error message
@@ -377,15 +359,11 @@ const cvvValidator = () => {
       cvvErrorSpan.style.color = "red"
       cvv.style.border = "2px solid red"
       paymentLabel.appendChild(cvvErrorSpan)
-      console.log(cvv.value)
-      console.log("the else runs and returns false")
       return false
     }
   }
 }
-
 // Thanks to Elijah on Slack for help with this section and the Credit Card helper functions
-
 // eventlisteners for triggering helper functions
 name.addEventListener("blur", nameValidator)
 email.addEventListener("blur", emailValidator)
@@ -394,7 +372,7 @@ ccNumber.addEventListener("keyup", ccNumberValidator)
 zip.addEventListener("keyup", zipValidator)
 cvv.addEventListener("keyup", cvvValidator)
 
-// if validation is false and the error messages are in the DOM, don't submit the form
+// Submit unless validation is false and the error messages are in the DOM
 form.addEventListener("submit", e => {
   // this is one way to write the if conditional
   if (nameValidator() === false) {
@@ -408,13 +386,15 @@ form.addEventListener("submit", e => {
     e.preventDefault()
     console.log("emailValidator evaluated to false")
   }
-
   if (!activityValidator()) {
     e.preventDefault()
     console.log("activityValidator evaluated to false")
   }
-  if (!ccNumberValidator() && !zipValidator() && !cvvValidator()) {
-    e.preventDefault()
-    console.log("creditCardValidator evaluated to false")
+  // if Credit Card is selected run the validation functions
+  if (payment.children[1].selected) {
+    if (!ccNumberValidator() && !zipValidator() && !cvvValidator()) {
+      e.preventDefault()
+      console.log("creditCardValidator evaluated to false")
+    }
   }
-})
+}) // end form submit eventlistener
