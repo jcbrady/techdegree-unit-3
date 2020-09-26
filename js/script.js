@@ -377,24 +377,18 @@ form.addEventListener("submit", e => {
   // this is one way to write the if conditional
   if (nameValidator() === false) {
     e.preventDefault()
-    console.log(name.value + "name was empty, so nameValidator evaluated to false")
-  } else {
-    console.log(name.value + " is the name, nameValidator evaluated to true")
   }
   // this is a more common way to write it
   if (!emailValidator()) {
     e.preventDefault()
-    console.log("emailValidator evaluated to false")
   }
   if (!activityValidator()) {
     e.preventDefault()
-    console.log("activityValidator evaluated to false")
   }
   // if Credit Card is selected run the validation functions
   if (payment.children[1].selected) {
     if (!ccNumberValidator() && !zipValidator() && !cvvValidator()) {
       e.preventDefault()
-      console.log("creditCardValidator evaluated to false")
     }
   }
 }) // end form submit eventlistener
