@@ -49,6 +49,9 @@ const shirtColorDiv = document.getElementById("shirt-colors")
 selectColor.style.display = "none"
 shirtColorDiv.firstElementChild.style.display = "none"
 
+/* NOTE ... RE-EXAMINE THIS - ... MAKE IT SELECT THE ATTRIBUTE 
+jspuns for example so it can always work with that category */
+
 // Add event listener with "change" event on the "design" select element
 // This conditionally shows the relevant elements in the "color" select menu
 selectDesign.addEventListener("change", e => {
@@ -190,12 +193,15 @@ const nameValidator = () => {
   // If present existingErrorSpan selects the id so it can be referenced in the if/else statement
   const nameLabel = document.getElementsByTagName("label")[0]
 
+  // Regular Expression for Name
+  const nameRegex = /^[A-Za-z]/.test(name.value)
+
   let errorName = document.createElement("span")
   errorName.setAttribute("id", "nameError")
   let existingErrorSpan = document.getElementById("nameError")
 
   // error message if name is empty
-  if (name.value.length > 0 && name.value.length < 26) {
+  if (name.value.length > 0 && name.value.length < 26 && nameRegex) {
     // error message removed if there was a previous error
     if (existingErrorSpan) {
       nameLabel.removeChild(existingErrorSpan)
@@ -221,7 +227,7 @@ const emailValidator = () => {
   let errorEmail = document.createElement("span")
   errorEmail.setAttribute("id", "emailError")
   let existingErrorSpan = document.getElementById("emailError")
-  // for regex
+  // Regular Expression for Email
   const emailValue = email.value
   const atSymbol = emailValue.indexOf("@")
   const dot = emailValue.lastIndexOf(".")
@@ -285,9 +291,16 @@ const paymentLabel = document.querySelector("label[for='payment']")
 const ccNumberValidator = () => {
   // Regular expression for credit card number = 13-16 numbers.
   const ccNumberRegex = /^[0-9]{13,16}$/.test(ccNumber.value)
+
+  // get error messages (if they exist in the DOM)
   const existingErrorSpanNum = document.getElementById("cardError")
 
-  // if the field is empty and the Credit Card number isn't valid
+  // create error messages
+  const cardErrorSpan = document.createElement("span")
+  cardErrorSpan.setAttribute("id", "cardError")
+  cardErrorSpan.style.color = "red"
+
+  // if the field is empty and the Credit Card number isn't a valid regex
   if (ccNumber.value.length !== 0 && ccNumberRegex) {
     // if there's an existingErrorSpan in the DOM remove it
     if (existingErrorSpanNum) {
@@ -296,16 +309,21 @@ const ccNumberValidator = () => {
       return true
     }
     // otherwise, create and append an error message
-  } else {
-    if (!existingErrorSpanNum) {
-      const cardErrorSpan = document.createElement("span")
-      cardErrorSpan.innerHTML = " Please enter a valid credit card; 13-16 numbers (no spaces)."
-      cardErrorSpan.setAttribute("id", "cardError")
-      cardErrorSpan.style.color = "red"
-      ccNumber.style.border = "2px solid red"
-      paymentLabel.appendChild(cardErrorSpan)
-      return false
-    }
+  } else if (ccNumber.value.length < 16 && !existingErrorSpanNum) {
+    // add red outline around input
+    ccNumber.style.border = "2px solid red"
+    // customize error message
+    cardErrorSpan.innerHTML = " Please enter a valid credit card: 13-16 numbers (no spaces)."
+    paymentLabel.appendChild(cardErrorSpan)
+    return false
+  } else if (ccNumber.value.length > 16) {
+    // add red outline around input
+    ccNumber.style.border = "2px solid red"
+    // customize error message
+    cardErrorSpan.innerHTML = " Whoops! Too many digits, please provide less than 16."
+    // paymentLabel.removeChild(existingErrorSpanNum) // remove the error not needed? The previous block would have run, so I don't understand why this isn't needed.
+    paymentLabel.appendChild(cardErrorSpan) // replace the error with this message
+    return false
   }
 } // end credit card number validation helper function
 
@@ -320,13 +338,14 @@ const zipValidator = () => {
     if (existingErrorSpanZip) {
       paymentLabel.removeChild(existingErrorSpanZip)
       zip.style.border = "2px solid rgb(111, 157, 220)"
+      return true
     }
-    return true
+
     // otherwise create and append an error message
   } else {
     if (!existingErrorSpanZip) {
       const zipErrorSpan = document.createElement("span")
-      zipErrorSpan.innerHTML = " Please enter a valid zip code."
+      zipErrorSpan.innerHTML = " Please enter a valid zip code (5 numbers)."
       zipErrorSpan.setAttribute("id", "zipError")
       zipErrorSpan.style.color = "red"
       zip.style.border = "2px solid red"
@@ -387,8 +406,19 @@ form.addEventListener("submit", e => {
   }
   // if Credit Card is selected run the validation functions
   if (payment.children[1].selected) {
-    if (!ccNumberValidator() && !zipValidator() && !cvvValidator()) {
+    if (!ccNumberValidator()) {
       e.preventDefault()
     }
+    if (!zipValidator()) {
+      e.preventDefault()
+    }
+    if (!cvvValidator()) {
+      e.preventDefault
+    }
+  } else {
+    //break
+    console.log("From the if statement in Credit Card?")
   }
+
+  console.log("submitted.")
 }) // end form submit eventlistener
