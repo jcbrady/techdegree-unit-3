@@ -46,11 +46,34 @@ selectDesign.firstElementChild.innerHTML = "Please Select a T-shirt Theme"
 // Hide both the label and select elements
 const selectColor = document.getElementById("color")
 const shirtColorDiv = document.getElementById("shirt-colors")
+
+//
+//
+//
+//
+// How to go about setting this up so that it loops based on attributes or values
+// I'd think the easiest way would be to change the html
+// not sure what to tell the loop in terms of the .length property
+// currently I hard coded numbers.
+// At this time, I have too much frustration present to approach the project in a clear state of mind
+// need a break from it!
+// Sept. 27 2020
+//
+const jsPuns = document.querySelector('#design option[value="js puns"]')
+console.log(jsPuns.value)
+//const colorSelect = document.querySelector('#color')
+console.log(selectColor.textContent.includes("JS Puns"))
+if (selectColor.textContent.includes("JS Puns")) {
+  console.log(selectColor.textContent.indexOf("JS Puns"))
+}
+//
+//
+//
+//
+//
+
 selectColor.style.display = "none"
 shirtColorDiv.firstElementChild.style.display = "none"
-
-/* NOTE ... RE-EXAMINE THIS - ... MAKE IT SELECT THE ATTRIBUTE 
-jspuns for example so it can always work with that category */
 
 // Add event listener with "change" event on the "design" select element
 // This conditionally shows the relevant elements in the "color" select menu
@@ -113,15 +136,9 @@ activity.addEventListener("change", function (e) {
   cost = parseInt(cost)
 
   if (check.checked === true) {
-    //console.log(check.getAttribute("name"))
-    //console.log("is now checked")
     totalCost = totalCost + cost
-    // console.log(totalCost)
   } else if (check.checked === false) {
-    //console.log(check.getAttribute("name"))
-    //console.log("is now unchecked")
     totalCost = totalCost - cost
-    //console.log(totalCost)
   }
   costElement.textContent = "Total: $" + totalCost
 
@@ -367,7 +384,6 @@ const cvvValidator = () => {
       paymentLabel.removeChild(existingErrorSpanCvv)
       cvv.style.border = "2px solid rgb(111, 157, 220)"
     }
-
     return true
   } else {
     // else if no error is in the DOM, create and append an error message
@@ -378,8 +394,8 @@ const cvvValidator = () => {
       cvvErrorSpan.style.color = "red"
       cvv.style.border = "2px solid red"
       paymentLabel.appendChild(cvvErrorSpan)
-      return false
     }
+    return false
   }
 }
 // Thanks to Elijah on Slack for help with this section and the Credit Card helper functions
@@ -413,10 +429,6 @@ form.addEventListener("submit", e => {
     if (!cvvValidator()) {
       e.preventDefault()
     }
-  } else {
-    //break
-    console.log("From the else statement in Credit Card?")
   }
-
-  console.log("submitted.")
+  // console.log("submitted.")
 }) // end form submit eventlistener
