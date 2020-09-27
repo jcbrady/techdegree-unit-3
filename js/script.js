@@ -316,7 +316,7 @@ const ccNumberValidator = () => {
     cardErrorSpan.innerHTML = " Please enter a valid credit card: 13-16 numbers (no spaces)."
     paymentLabel.appendChild(cardErrorSpan)
     return false
-  } else if (ccNumber.value.length > 16) {
+  } else if (ccNumber.value.length > 16 && !existingErrorSpanNum) {
     // add red outline around input
     ccNumber.style.border = "2px solid red"
     // customize error message
@@ -393,11 +393,9 @@ cvv.addEventListener("keyup", cvvValidator)
 
 // Submit unless validation is false and the error messages are in the DOM
 form.addEventListener("submit", e => {
-  // this is one way to write the if conditional
-  if (nameValidator() === false) {
+  if (!nameValidator()) {
     e.preventDefault()
   }
-  // this is a more common way to write it
   if (!emailValidator()) {
     e.preventDefault()
   }
