@@ -51,21 +51,36 @@ const shirtColorDiv = document.getElementById("shirt-colors")
 //
 //
 //
-// How to go about setting this up so that it loops based on attributes or values
-// I'd think the easiest way would be to change the html
-// not sure what to tell the loop in terms of the .length property
-// currently I hard coded numbers.
-// At this time, I have too much frustration present to approach the project in a clear state of mind
-// need a break from it!
+// How to go about setting this up so that it loops based on textContent
 // Sept. 27 2020
 //
-const jsPuns = document.querySelector('#design option[value="js puns"]')
-console.log(jsPuns.value)
+const jsPuns = document.querySelectorAll('#design option[value="js puns"]')
+const checkText = document.querySelectorAll("#color option")
+
+//console.log(checkText)
+//console.log(checkText.length)
+//console.log(jsPuns.value)
+//console.log(jsPuns.length)
 //const colorSelect = document.querySelector('#color')
-console.log(selectColor.textContent.includes("JS Puns"))
-if (selectColor.textContent.includes("JS Puns")) {
-  console.log(selectColor.textContent.indexOf("JS Puns"))
-}
+//console.log(selectColor.textContent.includes("JS Puns"))
+//if (selectColor.textContent.includes("JS Puns")) {
+//console.log(selectColor.textContent.indexOf("JS Puns"))
+//}
+
+//let count = 0
+// value of checkText = 6, so the loop runs 6 times
+// then it runs the if statement
+// but why is the console putting out 2 different values?
+// for (let i = 0; i < checkText.length; i++) {
+//   console.log(checkText[i].textContent)
+
+//   //count++
+//   //console.log(count)
+//   if (checkText[i].textContent.includes("JS Puns")) {
+//     console.log(checkText[i])
+//   }
+// }
+
 //
 //
 //
@@ -310,6 +325,8 @@ const ccNumberValidator = () => {
   const ccNumberRegex = /^[0-9]{13,16}$/.test(ccNumber.value)
 
   // get error messages (if they exist in the DOM)
+  // this would be undefined if they aren't in the DOM
+  // or I could put existingErrorSpanNum in each "else if" statement, but that would mean I'd need to declare it twice
   const existingErrorSpanNum = document.getElementById("cardError")
 
   // create error messages
@@ -341,7 +358,10 @@ const ccNumberValidator = () => {
     // paymentLabel.removeChild(existingErrorSpanNum) // remove the error not needed? The previous block would have run, so I don't understand why this isn't needed.
     paymentLabel.appendChild(cardErrorSpan) // replace the error with this message
     return false
+  } else {
+    return true
   }
+  console.log("credit card function ccValidator() ran")
 } // end credit card number validation helper function
 
 // helper function to validate zip.
@@ -409,26 +429,46 @@ cvv.addEventListener("keyup", cvvValidator)
 
 // Submit unless validation is false and the error messages are in the DOM
 form.addEventListener("submit", e => {
+  //console.log(nameValidator)
+  //console.log(!nameValidator())
+  //nameValidator()
+
+  // nameValidator() returns undefined so it's "falsy"
+  // !nameValidator() returns true
+
   if (!nameValidator()) {
     e.preventDefault()
+    console.log("name")
   }
   if (!emailValidator()) {
     e.preventDefault()
+    console.log("email")
   }
   if (!activityValidator()) {
     e.preventDefault()
+    console.log("activity")
   }
   // if Credit Card is selected run the validation functions
+  // This "if" statement for the credit card is preventing it from submitting
+  // even when there are no errors present
+  // if the credit card is not in the if statement, it submits but with other errors
+
   if (payment.children[1].selected) {
+    // this ccNumberValidator is getting called for some reason???
     if (!ccNumberValidator()) {
       e.preventDefault()
+      console.log("credit card number")
     }
+
     if (!zipValidator()) {
       e.preventDefault()
+      console.log("zip")
     }
     if (!cvvValidator()) {
       e.preventDefault()
+      console.log("cvv")
     }
   }
+
   // console.log("submitted.")
 }) // end form submit eventlistener
