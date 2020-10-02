@@ -333,15 +333,15 @@ const ccNumberValidator = () => {
   const cardErrorSpan = document.createElement("span")
   cardErrorSpan.setAttribute("id", "cardError")
   cardErrorSpan.style.color = "red"
-
   // if the field is empty and the Credit Card number isn't a valid regex
+  // Lee V pointed out this CONDITIONAL ISN'T FIRING:
   if (ccNumber.value.length !== 0 && ccNumberRegex) {
     // if there's an existingErrorSpan in the DOM remove it
     if (existingErrorSpanNum) {
       paymentLabel.removeChild(existingErrorSpanNum)
       ccNumber.style.border = "2px solid rgb(111, 157, 220)"
-      return true
     }
+    return true
     // otherwise, create and append an error message
   } else if (ccNumber.value.length < 16 && !existingErrorSpanNum) {
     // add red outline around input
@@ -358,9 +358,10 @@ const ccNumberValidator = () => {
     // paymentLabel.removeChild(existingErrorSpanNum) // remove the error not needed? The previous block would have run, so I don't understand why this isn't needed.
     paymentLabel.appendChild(cardErrorSpan) // replace the error with this message
     return false
-  } else {
-    return true
   }
+  // else {
+  //   return true
+  // }
   console.log("credit card function ccValidator() ran")
 } // end credit card number validation helper function
 
