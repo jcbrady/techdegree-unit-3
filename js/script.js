@@ -67,7 +67,7 @@ const checkText = document.querySelectorAll("#color option")
 //console.log(selectColor.textContent.indexOf("JS Puns"))
 //}
 
-//let count = 0
+// let count = 0
 // value of checkText = 6, so the loop runs 6 times
 // then it runs the if statement
 // but why is the console putting out 2 different values?
@@ -262,10 +262,16 @@ const emailValidator = () => {
   // Regular Expression for Email
   const emailValue = email.value
   const atSymbol = emailValue.indexOf("@")
-  const dot = emailValue.lastIndexOf(".")
+  const dot = emailValue.lastIndexOf(".com")
+
+  // reference from: https://www.regular-expressions.info/email.html
+  // const emailRegex = /b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/.test(email.value)
+  // reference for regex: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email.value)
 
   // Check 1: error message if email is empty and doesn't contain @ and . at a given index
-  if (email.value.length !== 0 && atSymbol > 1 && dot > atSymbol + 1) {
+  // if (email.value.length !== 0 && atSymbol > 1 && dot > atSymbol + 1) // too simple
+  if (email.value.length !== 0 && emailRegex) {
     // error message removed if there was a previous error
     if (existingErrorSpan) {
       emailLabel.removeChild(existingErrorSpan)
@@ -434,8 +440,8 @@ form.addEventListener("submit", e => {
   //console.log(!nameValidator())
   //nameValidator()
 
-  // nameValidator() returns undefined so it's "falsy"
-  // !nameValidator() returns true
+  // console.log(ccNumberValidator()) // returns true now
+  // !nameValidator() // returns as true, if it's false.
 
   if (!nameValidator()) {
     e.preventDefault()
