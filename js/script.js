@@ -59,9 +59,9 @@ const shirtColorDiv = document.getElementById("shirt-colors")
 const jsPuns = document.querySelectorAll('#design option[value="js puns"]')
 const checkText = document.querySelectorAll("#color option")
 
-console.log(checkText)
+//console.log(checkText)
 
-console.log(checkText.length) // 6
+//console.log(checkText.length) // 6
 // loop
 // if [i] textContent includes "Puns"
 // show this
@@ -119,42 +119,39 @@ selectDesign.addEventListener("change", e => {
   shirtColorDiv.firstElementChild.style.display = "block"
   // Declare the changed variable when user selects a design option - select id="design"
   let changed = e.target
+
   // conditional to show/hide the options - select id="color"
   if (changed.value === "js puns") {
-    // select the LAST 3 elements and hide them (loop 1)
-    //
-    //
-    //
-    // START THE NEW LOOP INSERT????
+    // START NEW LOOP - INSERT?
     for (let i = 0; i < checkText.length; i++) {
-      if (selectColor.textContent.includes("Puns")) {
+      //
+      console.log("for loop")
+      console.log(checkText.length) // 6
+      console.log(checkText) // nodelist
+      // hide these 3
+      if (selectColor[i].textContent.includes("&#9829")) {
+        checkText[i].style.display = "none"
+        //
+        console.log("&#9829")
+        console.log(checkText[i])
+      }
+      // show these 3
+      if (selectColor[i].textContent.includes("Puns")) {
         checkText[i].style.display = "block"
-        console.log("JS Puns")
+        //
+        console.log("Puns")
         console.log(checkText[i])
-        //console.log(selectColor.children[i])
+        //console.log(selectColor.children[i]
+        //checkText[i].style.display = "none")
       }
-      // show or hide the elements
-      if (selectColor.textContent.includes("&#9829")) {
-        selectColor.children[i].style.display = "none"
-        console.log("I luv JS")
-        console.log(checkText[i])
-      }
-    }
-
-    // select the FIRST 3 elements and show them (loop 2)
-    // if this loop is not here, then cornflower blue selected shows all items
-    // because checkText is 6 (not 3 as it was hard coded before)
-    // heart js selected is fine
-    // for (let j = 0; j < checkText.length; j++) {
-    //   selectColor.children[j].style.display = "block"
-    // }
+    } // end for loop
     // reset the menu to show the first option in this group of choices (outside of loop)
     selectColor.children[0].selected = "selected"
   }
 
   //
 
-  if (changed.value === "heart js") {
+  /*   if (changed.value === "heart js") {
     // select the FIRST 3 elements and hide them (loop 1)
     for (let i = 0; i < 3; i++) {
       selectColor.children[i].style.display = "none"
@@ -165,7 +162,11 @@ selectDesign.addEventListener("change", e => {
     }
     // set the menu to show the first option in this group of choices (outside of loop)
     selectColor.children[3].selected = "selected"
-  }
+  } */
+
+  //
+  //
+  //
 })
 
 // }}}}}}}}}}}}
