@@ -120,35 +120,46 @@ selectDesign.addEventListener("change", e => {
   // Declare the changed variable when user selects a design option - select id="design"
   let changed = e.target
 
-  // conditional to show/hide the options - select id="color"
-  if (changed.value === "js puns") {
-    // START NEW LOOP - INSERT?
-    for (let i = 0; i < checkText.length; i++) {
-      //
-      console.log("for loop")
-      console.log(checkText.length) // 6
-      console.log(checkText) // nodelist
-      // hide these 3
-      if (selectColor[i].textContent.includes("&#9829")) {
-        checkText[i].style.display = "none"
-        //
-        console.log("&#9829")
-        console.log(checkText[i])
-      }
-      // show these 3
-      if (selectColor[i].textContent.includes("Puns")) {
-        checkText[i].style.display = "block"
-        //
-        console.log("Puns")
-        console.log(checkText[i])
-        //console.log(selectColor.children[i]
-        //checkText[i].style.display = "none")
-      }
-    } // end for loop
-    // reset the menu to show the first option in this group of choices (outside of loop)
-    selectColor.children[0].selected = "selected"
-  }
+  // ---------------------------
+  // checkText is a nodelist of 6 - the color choices
+  // changed is the design option, either js puns or heart js - it's whatever value was selected
+  for (let o = 1; o < changed.length; o++) {
+    //console.log(checkText[o])
+    console.log(changed[o].value) // [1]js puns, [2]I heart js
 
+    if (changed[o].value == "js puns") {
+      // loop through the COLORS options checkText[c] & show only "js puns"
+      for (let c = 0; c < checkText.length; c++) {
+        if (checkText[c].textContent.includes("JS Puns")) {
+          console.log("hello from the nested if statement for js puns")
+          console.log(checkText[c])
+          checkText[c].style.display = "block"
+        } else {
+          checkText[c].style.display = "none"
+        }
+        //console.log(checkText[i].textContent)
+        //checkText[i].style.display = "none"
+      }
+    }
+
+    if (changed[o].value == "heart js") {
+      // loop through the COLORS options checkText[c] & show only "I ♥ JS"
+      for (let c = 0; c < checkText.length; c++) {
+        if (checkText[c].innerHTML.includes("I ♥ JS")) {
+          console.log("hello from the nested if statement for I ♥ JS")
+          console.log(checkText[c])
+          checkText[c].style.display = "block"
+        } else {
+          checkText[c].style.display = "none"
+        }
+        //console.log(checkText[i].textContent)
+        //checkText[i].style.display = "none"
+      }
+    }
+
+    // reset the menu to show the first option in this group of choices (outside of loop)
+  } // end long for loop with the design options
+  selectColor.children[0].selected = "selected"
   //
 
   /*   if (changed.value === "heart js") {
