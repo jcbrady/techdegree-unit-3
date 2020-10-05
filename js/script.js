@@ -2,11 +2,8 @@
 // PAGE SETUP - If user has Javascript
 // *******************************
 
-// variables for form submission
+// variable for form submission - put submit event on form, not on the button
 const form = document.getElementsByTagName("form")[0]
-// put submit event on form, not on the button
-// const submitButton = document.getElementsByTagName("button")[0]
-// console.log(submitButton)
 
 // Use javascript instead of autofocus in html to select the first form field on page load.
 let name = document.getElementById("name")
@@ -46,73 +43,14 @@ selectDesign.firstElementChild.innerHTML = "Please Select a T-shirt Theme"
 // Hide both the label and select elements
 const selectColor = document.getElementById("color")
 const shirtColorDiv = document.getElementById("shirt-colors")
-
-//
-//
-//
-//
-//
-//
-// How to go about setting this up so that it loops based on textContent
-// Sept. 27 2020
-//
-const jsPuns = document.querySelectorAll('#design option[value="js puns"]')
 const checkText = document.querySelectorAll("#color option")
 
-//console.log(checkText)
-
-//console.log(checkText.length) // 6
-// loop
-// if [i] textContent includes "Puns"
-// show this
-// hide others
-// if [i] includes "&#9829"
-// show that
-// hide others
-
-//console.log(jsPuns.value)
-//console.log(jsPuns.length)
-const colorSelect = document.querySelector("#color")
-//console.log(selectColor.textContent.includes("JS Puns"))
-if (selectColor.textContent.includes("JS Puns")) {
-  //console.log(selectColor.textContent.indexOf("JS Puns"))
-}
-//console.log(colorSelect)
-//value of checkText = 6, so the loop runs 6 times
-//then it runs the if statement
-//but why is the console putting out 2 different values?
-
-// FOR LOOP TEST
-// for (let i = 0; i < checkText.length; i++) {
-//   console.log("THIS STATEMENT IS IN THE TOP")
-//   console.log(checkText[i].textContent)
-
-//   if (checkText[i].textContent.includes("Puns")) {
-//     console.log("console shows JS Puns")
-//     console.log(checkText[i])
-//   }
-
-//   if (checkText[i].textContent.includes("&#9829")) {
-//     console.log("why doesn't this run?")
-//     console.log("console shows I heart JS")
-//     console.log(checkText[i])
-//   }
-// }
-
-//
-//
-//
-//
-//
-//
-//
 // initially hide shirt colors - div with id of "shirt-colors"
 selectColor.style.display = "none"
 shirtColorDiv.firstElementChild.style.display = "none"
 
 // Add event listener with "change" event on the "design" select element
 // This conditionally shows the relevant elements in the "color" select menu
-// OMITTED @ selectDesign.addEventLis... }}}}}}}}}}}}}}}}
 selectDesign.addEventListener("change", e => {
   // Show the "color" select menu and it's label
   selectColor.style.display = "block"
@@ -121,19 +59,17 @@ selectDesign.addEventListener("change", e => {
   let changed = e.target
 
   // ---------------------------
+  // CODE REVISITED to be more versatile
+  // ---------------------------
+
   // checkText is a nodelist of 6 - the color choices
   // changed is the design option, either js puns or heart js - it's whatever value was selected
-
-  // for (let o = 1; o < changed.length; o++) {
-  //console.log(checkText[o])
-  console.log(changed.value) // [1]js puns, [2]I heart js
 
   if (changed.value == "js puns") {
     // loop through the COLORS options checkText[c] & show only "js puns"
     for (let c = 0; c < checkText.length; c++) {
       if (checkText[c].textContent.includes("JS Puns")) {
-        //console.log("hello from the nested if statement for js puns")
-        //console.log(checkText[c])
+        // show the first option visually - in colors list
         selectColor.children[0].selected = "selected"
         // show the "js puns" elements
         checkText[c].style.display = "block"
@@ -141,8 +77,6 @@ selectDesign.addEventListener("change", e => {
         // hide the ones that aren't "js puns" elements
         checkText[c].style.display = "none"
       }
-      //console.log(checkText[i].textContent)
-      //checkText[i].style.display = "none"
     }
   }
 
@@ -150,12 +84,7 @@ selectDesign.addEventListener("change", e => {
     // loop through the COLORS options checkText[c] & show only "I ♥ JS"
     for (let c = 0; c < checkText.length; c++) {
       if (checkText[c].innerHTML.includes("I ♥ JS")) {
-        //console.log("hello from the nested if statement for I ♥ JS")
-        // console.log(checkText[0]) // heart js
-        // console.log(changed)
-        console.log(selectColor.children[0])
-
-        // bug fix to show the first option visually
+        // show the first option visually - in colors list
         selectColor.children[3].selected = "selected"
         // show the "I heart JS" elements
         checkText[c].style.display = "block"
@@ -163,71 +92,13 @@ selectDesign.addEventListener("change", e => {
         // hide the ones that aren't "I heart JS" elements
         checkText[c].style.display = "none"
       }
-      //console.log(checkText[i].textContent)
-      //checkText[i].style.display = "none"
     }
   }
-
-  // reset the menu to show the first option in this group of choices
-  //selectColor.children[0].selected = "selected"
-  //
-
-  /*   if (changed.value === "heart js") {
-    // select the FIRST 3 elements and hide them (loop 1)
-    for (let i = 0; i < 3; i++) {
-      selectColor.children[i].style.display = "none"
-    }
-    // select the LAST 3 elements and show them (loop 2)
-    for (let j = 3; j < 6; j++) {
-      selectColor.children[j].style.display = "block"
-    }
-    // set the menu to show the first option in this group of choices (outside of loop)
-    selectColor.children[3].selected = "selected"
-  } */
-
-  //
-  //
-  //
 })
-
-// }}}}}}}}}}}}
-/* selectDesign.addEventListener("change", e => {
-  // Show the "color" select menu and it's label
-  selectColor.style.display = "block"
-  shirtColorDiv.firstElementChild.style.display = "block"
-  // Declare the changed variable when user selects a design option - select id="design"
-  let changed = e.target
-  // conditional to show/hide the options - select id="color"
-  if (changed.value === "js puns") {
-    // select the LAST 3 elements and hide them (loop 1)
-    for (let i = 3; i < 6; i++) {
-      selectColor.children[i].style.display = "none"
-    }
-    // select the FIRST 3 elements and show them (loop 2)
-    for (let j = 0; j < 3; j++) {
-      selectColor.children[j].style.display = "block"
-    }
-    // reset the menu to show the first option in this group of choices (outside of loop)
-    selectColor.children[0].selected = "selected"
-  } else if (changed.value === "heart js") {
-    // select the FIRST 3 elements and hide them (loop 1)
-    for (let i = 0; i < 3; i++) {
-      selectColor.children[i].style.display = "none"
-    }
-    // select the LAST 3 elements and show them (loop 2)
-    for (let j = 3; j < 6; j++) {
-      selectColor.children[j].style.display = "block"
-    }
-    // set the menu to show the first option in this group of choices (outside of loop)
-    selectColor.children[3].selected = "selected"
-  }
-}) */
-// }}}}}}}}}}}}}}}
 
 // *******************************
 // ACTIVITY SECTION
 // Make sure there are not conflicts in day and time
-// Also, REVISIT/ASK: Should the entire line be grayed out or just the textbox? (Video shows entire line is dimmed)
 // *******************************
 
 // Create a DOM element, store it in a global variable and append it to the `.activites` section.
@@ -278,7 +149,8 @@ activity.addEventListener("change", function (e) {
 })
 
 // *******************************
-// PAYMENT INFO SECTION -
+// PAYMENT INFO SECTION
+// credit card will only validate if it's selected
 // *******************************
 
 // initially activate credit card payment option & hide other payment options
@@ -313,11 +185,9 @@ payment.addEventListener("change", function (e) {
 // *******************************
 // FORM VALIDATION AND VALIDATION MESSAGES
 // *******************************
-
 //
 // *******************************
 // HELPER FUNCTIONS
-//
 // helper function and error message to validate "name"
 const nameValidator = () => {
   // get the label element (to append span) and create span element for an error message
@@ -364,8 +234,6 @@ const emailValidator = () => {
   const atSymbol = emailValue.indexOf("@")
   const dot = emailValue.lastIndexOf(".com")
 
-  // reference from: https://www.regular-expressions.info/email.html
-  // const emailRegex = /b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/.test(email.value)
   // reference for regex: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email.value)
 
@@ -387,9 +255,8 @@ const emailValidator = () => {
     return false
   }
 }
-
-// helper function to validate activities
 // Code reference thanks to "sradms0" on Slack
+// helper function to validate activities
 const activityValidator = () => {
   // at least one checkbox must be checked
   // existingErrorSpan to "get by ID" if the element already exists
@@ -417,7 +284,8 @@ const activityValidator = () => {
   }
 }
 
-// Global variables, outside the creditCard helper functions, so I could reference them in eventListeners on page load.
+// Global variables
+// outside the creditCard helper functions so they can be referenced in eventListeners on page load.
 const ccNumber = document.querySelector("#cc-num")
 const zip = document.querySelector("#zip")
 const cvv = document.querySelector("#cvv")
@@ -431,8 +299,6 @@ const ccNumberValidator = () => {
   const ccNumberRegex = /^[0-9]{13,16}$/.test(ccNumber.value)
 
   // get error messages (if they exist in the DOM)
-  // this would be undefined if they aren't in the DOM
-  // or I could put existingErrorSpanNum in each "else if" statement, but that would mean I'd need to declare it twice
   const existingErrorSpanNum = document.getElementById("cardError")
 
   // create error messages
@@ -440,7 +306,6 @@ const ccNumberValidator = () => {
   cardErrorSpan.setAttribute("id", "cardError")
   cardErrorSpan.style.color = "red"
   // if the field is empty and the Credit Card number isn't a valid regex
-  // Lee V pointed out this CONDITIONAL ISN'T FIRING:
   if (ccNumber.value.length !== 0 && ccNumberRegex) {
     // if there's an existingErrorSpan in the DOM remove it
     if (existingErrorSpanNum) {
@@ -461,14 +326,9 @@ const ccNumberValidator = () => {
     ccNumber.style.border = "2px solid red"
     // customize error message
     cardErrorSpan.innerHTML = " Whoops! Too many digits, please provide less than 16."
-    // paymentLabel.removeChild(existingErrorSpanNum) // remove the error not needed? The previous block would have run, so I don't understand why this isn't needed.
     paymentLabel.appendChild(cardErrorSpan) // replace the error with this message
     return false
   }
-  // else {
-  //   return true
-  // }
-  console.log("credit card function ccValidator() ran")
 } // end credit card number validation helper function
 
 // helper function to validate zip.
@@ -534,15 +394,8 @@ ccNumber.addEventListener("keyup", ccNumberValidator)
 zip.addEventListener("keyup", zipValidator)
 cvv.addEventListener("keyup", cvvValidator)
 
-// Submit unless validation is false and the error messages are in the DOM
+// Submit the form unless validation is false and the error messages are in the DOM
 form.addEventListener("submit", e => {
-  //console.log(nameValidator)
-  //console.log(!nameValidator())
-  //nameValidator()
-
-  // console.log(ccNumberValidator()) // returns true now
-  // !nameValidator() // returns as true, if it's false.
-
   if (!nameValidator()) {
     e.preventDefault()
     console.log("name")
@@ -555,13 +408,8 @@ form.addEventListener("submit", e => {
     e.preventDefault()
     console.log("activity")
   }
-  // if Credit Card is selected run the validation functions
-  // This "if" statement for the credit card is preventing it from submitting
-  // even when there are no errors present
-  // if the credit card is not in the if statement, it submits but with other errors
-
+  // if Credit Card is selected run the relevant validation functions
   if (payment.children[1].selected) {
-    // this ccNumberValidator is getting called for some reason???
     if (!ccNumberValidator()) {
       e.preventDefault()
       console.log("credit card number")
@@ -576,6 +424,4 @@ form.addEventListener("submit", e => {
       console.log("cvv")
     }
   }
-
-  // console.log("submitted.")
 }) // end form submit eventlistener
